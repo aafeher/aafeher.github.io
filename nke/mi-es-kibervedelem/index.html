@@ -1,0 +1,2428 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biztonságosan a netbankban – interaktív képzés</title>
+<meta name="description" content="Interaktív tudatosító képzés a biztonságos netbank-használatról: hamis oldalak, adathalász üzenetek, telefonos csalók, jelszavak, megerősítő kódok, MI-alapú csalások – gyakorlatokkal és teszttel.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0d2461">
+<meta property="og:title" content="Biztonságosan a netbankban">
+<meta property="og:description" content="8 rövid lecke gyakorlatokkal és egy záróteszttel a biztonságos netbank-használatról.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.8l8.5 3.2v6.4c0 5.6-3.9 9.9-8.5 11.3-4.6-1.4-8.5-5.7-8.5-11.3V5z' fill='%231f4fd6'/%3E%3Cpath d='M8.2 12.2l2.6 2.6 5-5.4' stroke='white' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>
+  /* Téma és betűméret visszaállítása még a megjelenítés előtt (villanás elkerülése) */
+  (function () {
+    try {
+      var r = document.documentElement;
+      var t = JSON.parse(localStorage.getItem('nb-theme'));
+      if (t === 'dark' || t === 'light') r.setAttribute('data-theme', t);
+      var S = [0.9, 1, 1.12, 1.25, 1.4, 1.6];
+      var s = JSON.parse(localStorage.getItem('nb-scale-i'));
+      if (typeof s === 'number' && S[s]) r.style.setProperty('--scale', S[s]);
+    } catch (e) { /* a böngésző tiltja a tárolást – alapértékekkel futunk */ }
+  })();
+</script>
+<style>
+/* =========================================================
+   1. Színek és alapértékek (világos / sötét téma)
+   ========================================================= */
+:root {
+  --scale: 1;
+  color-scheme: light;
+  --bg: #f3f5fa;
+  --surface: #ffffff;
+  --surface-2: #f6f8fc;
+  --surface-3: #e6ebf4;
+  --text: #14203a;
+  --muted: #4b5872;
+  --border: #d6ddea;
+  --primary: #1f4fd6;
+  --primary-strong: #173db0;
+  --primary-soft: #e6edff;
+  --primary-ink: #1a3fa8;
+  --on-primary: #ffffff;
+  --ok: #15803d;
+  --ok-soft: #e5f6ec;
+  --ok-ink: #0f5a2c;
+  --on-ok: #ffffff;
+  --bad: #c0262d;
+  --bad-soft: #fdecec;
+  --bad-ink: #8c1a1f;
+  --on-bad: #ffffff;
+  --warn: #b26b00;
+  --warn-soft: #fff4dc;
+  --warn-ink: #6b4100;
+  --warn-border: #f0cd84;
+  --hl: #ffe27a;
+  --hl-ink: #3b2c00;
+  --bubble-in: #ffffff;
+  --screen: #eef1f7;
+  --frame: #1b2333;
+  --hero-1: #0d2461;
+  --hero-2: #1f4fd6;
+  --shadow: 0 1px 2px rgba(20, 32, 58, .05), 0 10px 28px rgba(20, 32, 58, .07);
+  --radius: 20px;
+  --focus: #f59e0b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0d1320;
+    --surface: #151d2e;
+    --surface-2: #1a2438;
+    --surface-3: #26324a;
+    --text: #e9eef8;
+    --muted: #a8b3c9;
+    --border: #2b3850;
+    --primary: #7ea3ff;
+    --primary-strong: #9fbaff;
+    --primary-soft: #1c2a4d;
+    --primary-ink: #b5caff;
+    --on-primary: #0a1226;
+    --ok: #4ade80;
+    --ok-soft: #10301f;
+    --ok-ink: #a7f0c3;
+    --on-ok: #06210f;
+    --bad: #ff7b7b;
+    --bad-soft: #3a171b;
+    --bad-ink: #ffc2c2;
+    --on-bad: #2a0607;
+    --warn: #fbbf24;
+    --warn-soft: #30240b;
+    --warn-ink: #fde3a1;
+    --warn-border: #6b5216;
+    --hl: #6b5a12;
+    --hl-ink: #fff3c4;
+    --bubble-in: #22304a;
+    --screen: #0f1626;
+    --frame: #05080f;
+    --hero-1: #081536;
+    --hero-2: #1b3b9e;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 28px rgba(0, 0, 0, .28);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d1320;
+  --surface: #151d2e;
+  --surface-2: #1a2438;
+  --surface-3: #26324a;
+  --text: #e9eef8;
+  --muted: #a8b3c9;
+  --border: #2b3850;
+  --primary: #7ea3ff;
+  --primary-strong: #9fbaff;
+  --primary-soft: #1c2a4d;
+  --primary-ink: #b5caff;
+  --on-primary: #0a1226;
+  --ok: #4ade80;
+  --ok-soft: #10301f;
+  --ok-ink: #a7f0c3;
+  --on-ok: #06210f;
+  --bad: #ff7b7b;
+  --bad-soft: #3a171b;
+  --bad-ink: #ffc2c2;
+  --on-bad: #2a0607;
+  --warn: #fbbf24;
+  --warn-soft: #30240b;
+  --warn-ink: #fde3a1;
+  --warn-border: #6b5216;
+  --hl: #6b5a12;
+  --hl-ink: #fff3c4;
+  --bubble-in: #22304a;
+  --screen: #0f1626;
+  --frame: #05080f;
+  --hero-1: #081536;
+  --hero-2: #1b3b9e;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 28px rgba(0, 0, 0, .28);
+}
+
+/* =========================================================
+   2. Alapok
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  font-size: calc(112.5% * var(--scale));
+  /* nagyon keskeny kijelzőn a legnagyobb fokozat se lógjon ki */
+  font-size: min(calc(112.5% * var(--scale)), 8vw);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Roboto, "Noto Sans", Arial, sans-serif;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+h1, h2, h3, h4 { line-height: 1.22; letter-spacing: -.01em; }
+h1, h2, h3, h4, p, li, legend, label, dd { overflow-wrap: break-word; }
+.toc-title, .opt-text, .q legend > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+h2, h3 { -webkit-hyphens: auto; hyphens: auto; }
+h2 { font-size: clamp(1.45rem, 3.4vw, 1.95rem); margin: 0 0 .6rem; }
+h3 { font-size: 1.18rem; margin: 1.6rem 0 .6rem; }
+p { margin: 0 0 1rem; }
+a { color: var(--primary-ink); text-underline-offset: .18em; }
+strong { font-weight: 700; }
+code, .mono { font-family: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: .92em; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ico { width: 1.25em; height: 1.25em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -.22em; }
+.ico-lg { width: 30px; height: 30px; }
+.skip-link { position: absolute; left: 16px; top: -100px; z-index: 100; background: var(--primary); color: var(--on-primary); padding: .7rem 1rem; border-radius: 10px; font-weight: 700; }
+.skip-link:focus { top: 12px; }
+
+/* =========================================================
+   3. Gombok, űrlapelemek
+   ========================================================= */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+  min-height: 48px; padding: .65rem 1.25rem;
+  border-radius: 12px; border: 2px solid transparent;
+  font: inherit; font-weight: 650; font-size: 1rem; line-height: 1.25;
+  cursor: pointer; text-decoration: none; text-align: center;
+  transition: transform .15s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease, color .2s ease;
+}
+.btn:active:not([disabled]) { transform: translateY(1px); }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.btn[disabled].chosen { opacity: 1; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-primary:hover:not([disabled]) { background: var(--primary-strong); box-shadow: 0 6px 18px color-mix(in srgb, var(--primary) 30%, transparent); }
+.btn-secondary { background: var(--surface); color: var(--text); border-color: var(--border); }
+.btn-secondary:hover:not([disabled]) { border-color: var(--primary); color: var(--primary-ink); }
+.btn-ok { background: var(--ok); color: var(--on-ok); }
+.btn-bad { background: var(--bad); color: var(--on-bad); }
+.btn-sm { min-height: 42px; padding: .4rem .95rem; font-size: .92rem; border-radius: 10px; }
+.btn-lg { min-height: 56px; padding: .8rem 1.7rem; font-size: 1.08rem; }
+.btn.chosen { box-shadow: 0 0 0 3px var(--primary) inset; }
+.btn-row { display: flex; flex-wrap: wrap; gap: .6rem; }
+
+.input {
+  width: 100%; min-height: 52px; padding: .6rem .95rem;
+  font: inherit; font-size: 1.05rem; color: var(--text);
+  background: var(--surface); border: 2px solid var(--border); border-radius: 12px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 22%, transparent); }
+.field label { display: block; font-weight: 650; margin-bottom: .35rem; }
+.field .hint { display: block; font-size: .88rem; color: var(--muted); margin-top: .3rem; }
+
+/* =========================================================
+   4. Felső eszköztár
+   ========================================================= */
+.toolbar {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+/* Az eszköztár mérete szándékosan független a betűméret-állítástól, hogy mindig elférjen */
+.toolbar { font-size: 16px; }
+.toolbar-inner { max-width: 1120px; margin: 0 auto; padding: 9px 16px; display: flex; align-items: center; gap: 14px; }
+.brand { display: inline-flex; align-items: center; gap: .5em; font-weight: 750; color: var(--text); text-decoration: none; white-space: nowrap; font-size: 1em; }
+.brand .ico { color: var(--primary); width: 1.6em; height: 1.6em; }
+.progress-wrap { flex: 1; display: flex; align-items: center; gap: .65rem; min-width: 0; }
+.progress-text { font-size: .85em; font-weight: 650; color: var(--muted); white-space: nowrap; }
+.progress { flex: 1; height: 10px; background: var(--surface-3); border-radius: 99px; overflow: hidden; min-width: 50px; }
+.progress > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--primary), var(--ok)); border-radius: inherit; transition: width .6s ease; }
+.tools { display: flex; gap: .35rem; }
+.tool-btn {
+  min-width: 44px; height: 44px; padding: 0 .55rem;
+  display: inline-flex; align-items: center; justify-content: center; gap: .3rem;
+  border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font: inherit; font-weight: 750; font-size: .95em; cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.tool-btn:hover:not([disabled]) { border-color: var(--primary); color: var(--primary-ink); }
+.tool-btn[disabled] { opacity: .4; cursor: not-allowed; }
+.tool-btn .small-a { font-size: .78em; }
+@media (max-width: 560px) {
+  .brand span { display: none; }
+  .toolbar-inner { gap: .6rem; }
+}
+
+/* =========================================================
+   5. Nyitó (hero) rész
+   ========================================================= */
+.hero {
+  position: relative; overflow: hidden; color: #fff;
+  background:
+    radial-gradient(900px 420px at 88% -10%, rgba(255, 255, 255, .16), transparent 62%),
+    radial-gradient(700px 380px at -5% 110%, rgba(120, 160, 255, .25), transparent 60%),
+    linear-gradient(135deg, var(--hero-1), var(--hero-2));
+  padding: clamp(40px, 7vw, 84px) 16px clamp(88px, 10vw, 128px);
+}
+.hero-inner { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .9fr); gap: 2.5rem; align-items: center; }
+.eyebrow { display: inline-flex; align-items: center; gap: .5rem; margin: 0; font-size: .82rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .22); padding: .35rem .85rem; border-radius: 99px; }
+.hero h1 { font-size: min(clamp(2.1rem, 5.6vw, 3.5rem), 11.5vw); line-height: 1.08; margin: .9rem 0 1rem; letter-spacing: -.025em; }
+.hero h1 em { font-style: normal; background: linear-gradient(90deg, #ffd166, #ffe9a8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero .lead { font-size: clamp(1.08rem, 2.2vw, 1.28rem); max-width: 34ch; opacity: .95; margin: 0 0 1.4rem; }
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1.9rem; padding: 0; list-style: none; }
+.chips li { display: inline-flex; align-items: center; gap: .4rem; background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .22); padding: .32rem .85rem; border-radius: 99px; font-size: .9rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.btn-hero { background: #fff; color: #0d2461; }
+.btn-hero:hover { box-shadow: 0 10px 26px rgba(0, 0, 0, .25); }
+.btn-ghost { background: transparent; color: #fff; border-color: rgba(255, 255, 255, .55); }
+.btn-ghost:hover { background: rgba(255, 255, 255, .1); border-color: #fff; }
+.hero-art { width: 100%; max-width: 400px; justify-self: center; height: auto; filter: drop-shadow(0 24px 40px rgba(0, 0, 0, .25)); }
+.hero-art .float { animation: float 6s ease-in-out infinite; transform-box: fill-box; }
+.hero-art .f2 { animation-delay: -3s; }
+.hero-art .twinkle { animation: twinkle 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.hero-art .t2 { animation-delay: -1.6s; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(.8); } }
+@media (max-width: 860px) {
+  .hero-inner { grid-template-columns: minmax(0, 1fr); }
+  .hero-art { max-width: 260px; order: -1; margin-bottom: -.5rem; }
+}
+
+/* =========================================================
+   6. Elrendezés, kártyák
+   ========================================================= */
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: clamp(20px, 4.2vw, 44px); }
+.intro { margin-top: -64px; position: relative; }
+.section-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+.title-group { display: flex; align-items: center; gap: 1rem; min-width: 0; }
+.title-group h2 { margin: 0; }
+.title-group > div { min-width: 0; }
+.kicker { margin: 0 0 .1rem; font-size: .82rem; font-weight: 750; text-transform: uppercase; letter-spacing: .09em; color: var(--primary-ink); display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.badge-icon { width: 58px; height: 58px; border-radius: 16px; background: var(--primary-soft); color: var(--primary-ink); display: grid; place-items: center; flex: none; }
+
+.golden {
+  display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start;
+  background: linear-gradient(135deg, var(--warn-soft), var(--surface));
+  border: 2px solid var(--warn-border); border-radius: 18px;
+  padding: 1.2rem 1.4rem; margin: 1.6rem 0;
+}
+.golden .g-icon { width: 52px; height: 52px; border-radius: 50%; background: var(--warn); color: #fff; display: grid; place-items: center; }
+:root[data-theme="dark"] .golden .g-icon { color: #1d1400; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .golden .g-icon { color: #1d1400; } }
+.golden h3 { margin: .1rem 0 .35rem; color: var(--warn-ink); font-size: 1.2rem; }
+.golden p { margin: 0 0 .5rem; font-size: 1.08rem; }
+.golden p:last-child { margin: 0; }
+.howto { list-style: none; padding: 0; margin: 0 0 1.2rem; display: grid; gap: .55rem; }
+.howto li { display: flex; gap: .75rem; align-items: flex-start; }
+.howto .ico { color: var(--primary); margin-top: .25rem; }
+.privacy { display: flex; gap: .75rem; align-items: flex-start; font-size: .95rem; color: var(--muted); background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; padding: .85rem 1rem; margin: 0; }
+.privacy .ico { color: var(--ok); margin-top: .2rem; }
+
+/* Tartalomjegyzék */
+.toc { margin: 3rem 0 1rem; }
+.toc h2 { margin-bottom: 1rem; }
+.toc-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr)); gap: .8rem; }
+.toc-grid a {
+  display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: .85rem; row-gap: .1rem; align-items: center;
+  padding: .85rem 1rem; min-height: 76px;
+  background: var(--surface); border: 2px solid var(--border); border-radius: 16px;
+  color: var(--text); text-decoration: none; transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.toc-grid a:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
+.toc-num { grid-row: span 2; width: 42px; height: 42px; border-radius: 12px; background: var(--primary-soft); color: var(--primary-ink); display: grid; place-items: center; font-weight: 800; font-size: 1.05rem; }
+.toc-title { font-weight: 650; line-height: 1.3; }
+.toc-status { font-size: .82rem; color: var(--muted); }
+.toc-grid a.is-done { border-color: color-mix(in srgb, var(--ok) 55%, var(--border)); }
+.toc-grid a.is-done .toc-num { background: var(--ok); color: var(--on-ok); }
+.toc-grid a.is-done .toc-status { color: var(--ok-ink); font-weight: 650; }
+.toc-grid a.toc-test { background: var(--primary-soft); border-color: transparent; }
+.toc-grid a.toc-test .toc-num { background: var(--primary); color: var(--on-primary); }
+
+/* =========================================================
+   7. Leckék
+   ========================================================= */
+.lesson { margin: 2.6rem 0; scroll-margin-top: 90px; position: relative; }
+.lesson-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.3rem; }
+.lesson-head h2 { margin: 0; }
+.done-pill { display: none; align-items: center; gap: .3rem; background: var(--ok-soft); color: var(--ok-ink); padding: .1rem .6rem; border-radius: 99px; letter-spacing: .03em; font-size: .76rem; }
+.lesson.is-done .done-pill { display: inline-flex; }
+.lesson.is-done .badge-icon { background: var(--ok-soft); color: var(--ok-ink); }
+
+.keybox { position: relative; background: var(--primary-soft); border-radius: 16px; padding: 1.05rem 1.25rem 1.1rem 1.4rem; margin: 0 0 1.5rem; border-left: 6px solid var(--primary); }
+.keybox-label { margin: 0 0 .2rem; font-size: .78rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--primary-ink); }
+.keybox p:last-child { margin: 0; font-size: 1.12rem; font-weight: 600; line-height: 1.5; }
+
+.facts { list-style: none; padding: 0; margin: 0 0 1.2rem; display: grid; gap: .6rem; }
+.facts li { position: relative; padding-left: 1.6rem; }
+.facts li::before { content: ""; position: absolute; left: .25rem; top: .62em; width: .55rem; height: .55rem; border-radius: 50%; background: var(--primary); }
+
+.dodont { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr)); gap: 1rem; margin: 1.4rem 0; }
+.dd { border-radius: 16px; padding: 1.05rem 1.2rem; border: 1px solid; }
+.dd.do { background: var(--ok-soft); border-color: color-mix(in srgb, var(--ok) 35%, transparent); }
+.dd.dont { background: var(--bad-soft); border-color: color-mix(in srgb, var(--bad) 35%, transparent); }
+.dd h3 { display: flex; align-items: center; gap: .55rem; font-size: 1.05rem; margin: 0 0 .55rem; }
+.dd.do h3 { color: var(--ok-ink); }
+.dd.dont h3 { color: var(--bad-ink); }
+.dd h3 .dot { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.dd.do h3 .dot { background: var(--ok); color: var(--on-ok); }
+.dd.dont h3 .dot { background: var(--bad); color: var(--on-bad); }
+.dd h3 .dot .ico { width: 16px; height: 16px; stroke-width: 3; }
+.dd ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.dd li { position: relative; padding-left: 1.55rem; }
+.dd li::before { position: absolute; left: 0; top: 0; font-weight: 900; }
+.dd.do li::before { content: "✓"; color: var(--ok); }
+.dd.dont li::before { content: "✕"; color: var(--bad); }
+
+.tip { display: flex; gap: .85rem; align-items: flex-start; border-radius: 16px; padding: 1rem 1.2rem; margin: 1.3rem 0; border: 1px solid; }
+.tip p { margin: 0; }
+.tip .ico { margin-top: .2rem; width: 1.4em; height: 1.4em; }
+.tip-warn { background: var(--warn-soft); border-color: var(--warn-border); }
+.tip-warn .ico { color: var(--warn); }
+.tip-info { background: var(--primary-soft); border-color: color-mix(in srgb, var(--primary) 30%, transparent); }
+.tip-info .ico { color: var(--primary); }
+.tip-bad { background: var(--bad-soft); border-color: color-mix(in srgb, var(--bad) 35%, transparent); }
+.tip-bad .ico { color: var(--bad); }
+
+/* Webcím felépítése */
+.anatomy { margin: 1rem 0 1.4rem; padding: 1.1rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 16px; }
+.anatomy-row { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; }
+.seg { display: flex; flex-direction: column; align-items: center; text-align: center; gap: .4rem; }
+.seg code { display: block; padding: .45rem .6rem; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); font-size: 1.05rem; font-weight: 650; }
+.seg span { font-size: .78rem; color: var(--muted); max-width: 15ch; line-height: 1.3; }
+.seg-owner code { background: var(--hl); color: var(--hl-ink); border-color: transparent; box-shadow: 0 0 0 3px var(--warn) inset; }
+.seg-owner span { color: var(--warn-ink); font-weight: 800; }
+
+.lesson-foot { display: flex; justify-content: flex-end; margin-top: 2rem; padding-top: 1.4rem; border-top: 1px solid var(--border); }
+.lesson.is-done .complete-btn { background: var(--ok); color: var(--on-ok); }
+
+/* Lépések (vészhelyzet) */
+.steps { list-style: none; counter-reset: st; padding: 0; margin: 0 0 1.2rem; display: grid; gap: .9rem; }
+.steps li { counter-increment: st; position: relative; padding: .9rem 1.1rem .9rem 4rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; }
+.steps li::before { content: counter(st); position: absolute; left: 1rem; top: .85rem; width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--bad); color: var(--on-bad); display: grid; place-items: center; font-weight: 850; }
+
+/* =========================================================
+   8. Gyakorlatok – közös
+   ========================================================= */
+.exercise { margin-top: 2rem; background: var(--surface-2); border: 2px solid color-mix(in srgb, var(--primary) 22%, var(--border)); border-radius: 20px; padding: clamp(16px, 3.2vw, 30px); }
+.ex-tag { display: inline-flex; align-items: center; gap: .4rem; background: var(--primary); color: var(--on-primary); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: .3rem .8rem; border-radius: 99px; }
+.exercise > h3 { margin: .75rem 0 .3rem; font-size: 1.28rem; }
+.ex-intro { color: var(--muted); margin: 0 0 1.2rem; }
+.feedback { margin: .8rem 0 0; padding: .75rem .95rem; border-radius: 12px; font-size: .98rem; }
+.feedback.ok { background: var(--ok-soft); color: var(--ok-ink); border: 1px solid color-mix(in srgb, var(--ok) 35%, transparent); }
+.feedback.bad { background: var(--bad-soft); color: var(--bad-ink); border: 1px solid color-mix(in srgb, var(--bad) 35%, transparent); }
+.feedback.warn { background: var(--warn-soft); color: var(--warn-ink); border: 1px solid var(--warn-border); }
+.ex-score { display: flex; align-items: center; justify-content: space-between; gap: .8rem; flex-wrap: wrap; margin-top: 1.1rem; font-weight: 650; }
+.pill { display: inline-flex; align-items: center; gap: .4rem; padding: .3rem .85rem; border-radius: 99px; background: var(--surface); border: 1px solid var(--border); font-size: .92rem; font-weight: 700; }
+
+/* 1. Webcím-felismerő */
+.url-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .85rem; }
+.url-item { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: .95rem 1rem; transition: border-color .25s; }
+.url-item.is-correct { border-color: var(--ok); }
+.url-item.is-wrong { border-color: var(--bad); }
+.addr { display: flex; align-items: center; gap: .55rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 99px; padding: .5rem 1rem; }
+.addr .ico { color: var(--muted); width: 1.05em; height: 1.05em; }
+.addr-text { font-family: ui-monospace, "Cascadia Mono", Consolas, "Liberation Mono", monospace; font-size: .98rem; word-break: break-all; line-height: 1.45; }
+.revealed .owner { background: var(--hl); color: var(--hl-ink); border-radius: 4px; padding: 0 .1em; font-weight: 700; }
+.revealed .odd { text-decoration: underline wavy var(--bad) 2px; text-underline-offset: 4px; }
+.url-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+
+/* Telefon-keret (SMS és hívás) */
+.phone { max-width: 420px; margin: 0 auto; background: var(--screen); border: 10px solid var(--frame); border-radius: 38px; padding: 14px 14px 18px; box-shadow: var(--shadow); position: relative; }
+.phone::before { content: ""; display: block; width: 90px; height: 6px; border-radius: 6px; background: var(--frame); opacity: .6; margin: -2px auto 12px; }
+.phone-bar { display: flex; align-items: center; gap: .6rem; padding: 0 .2rem .7rem; border-bottom: 1px solid var(--border); margin-bottom: .9rem; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-3); color: var(--muted); flex: none; }
+.phone-bar .who { line-height: 1.25; min-width: 0; }
+.phone-bar .who strong { display: block; font-size: .98rem; }
+.phone-bar .who small { color: var(--muted); font-size: .82rem; }
+.sms-bubble { background: var(--bubble-in); border-radius: 18px 18px 18px 6px; padding: .85rem 1rem; font-size: 1rem; line-height: 1.6; box-shadow: 0 1px 2px rgba(0, 0, 0, .08); }
+.sms-time { display: block; font-size: .78rem; color: var(--muted); margin-top: .35rem; }
+.flag { cursor: pointer; border-radius: 5px; padding: 0 .1em; transition: background-color .2s, color .2s, box-shadow .2s; -webkit-tap-highlight-color: transparent; }
+.flag:hover { background: color-mix(in srgb, var(--hl) 45%, transparent); }
+.flag.found { background: var(--bad-soft); color: var(--bad-ink); box-shadow: 0 0 0 2px var(--bad); cursor: default; }
+.flag .flag-n { display: none; }
+.flag.found .flag-n { display: inline-grid; place-items: center; width: 1.35em; height: 1.35em; margin-left: .25em; border-radius: 50%; background: var(--bad); color: var(--on-bad); font-size: .72em; font-weight: 800; vertical-align: .15em; }
+.sms-link { color: var(--primary-ink); text-decoration: underline; word-break: break-all; }
+.flag-list { list-style: none; margin: 1.2rem 0 0; padding: 0; display: grid; gap: .55rem; }
+.flag-list li { display: flex; gap: .7rem; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-left: 5px solid var(--bad); border-radius: 12px; padding: .7rem .9rem; animation: pop .35s ease; }
+.flag-list .n { flex: none; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--bad); color: var(--on-bad); display: grid; place-items: center; font-weight: 800; font-size: .85rem; margin-top: .1rem; }
+@keyframes pop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* 3. Hívás-szimulátor */
+.call-status { font-size: .8rem; color: var(--ok-ink); background: var(--ok-soft); padding: .1rem .55rem; border-radius: 99px; margin-left: auto; white-space: nowrap; }
+.chat { display: flex; flex-direction: column; gap: .65rem; min-height: 120px; }
+.msg { max-width: 88%; padding: .65rem .9rem; border-radius: 18px; font-size: .98rem; line-height: 1.5; animation: pop .3s ease; }
+.msg.them { background: var(--bubble-in); align-self: flex-start; border-bottom-left-radius: 6px; box-shadow: 0 1px 2px rgba(0, 0, 0, .08); }
+.msg.me { background: var(--primary); color: var(--on-primary); align-self: flex-end; border-bottom-right-radius: 6px; }
+.msg .who-label { display: block; font-size: .74rem; font-weight: 750; opacity: .75; margin-bottom: .1rem; }
+.typing { align-self: flex-start; background: var(--bubble-in); border-radius: 18px; padding: .7rem .9rem; display: inline-flex; gap: 5px; }
+.typing i { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); animation: blink 1.2s infinite; }
+.typing i:nth-child(2) { animation-delay: .2s; }
+.typing i:nth-child(3) { animation-delay: .4s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+.choices { display: grid; gap: .5rem; margin-top: 1rem; }
+.choices .btn { justify-content: flex-start; text-align: left; width: 100%; font-weight: 600; font-size: .95rem; line-height: 1.4; }
+.call-status { font-variant-numeric: tabular-nums; }
+.call-end { margin-top: 1rem; border-radius: 16px; padding: 1rem 1.1rem; animation: pop .35s ease; }
+.call-end.good { background: var(--ok-soft); color: var(--ok-ink); border: 1px solid color-mix(in srgb, var(--ok) 35%, transparent); }
+.call-end.bad { background: var(--bad-soft); color: var(--bad-ink); border: 1px solid color-mix(in srgb, var(--bad) 35%, transparent); }
+.call-end h4 { margin: 0 0 .35rem; font-size: 1.08rem; display: flex; gap: .5rem; align-items: center; }
+.call-end p { margin: 0 0 .8rem; }
+
+/* 4. Jelszó-erősség */
+.pw-row { display: flex; gap: .5rem; }
+.pw-row .input { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; }
+.pw-examples { display: flex; flex-wrap: wrap; gap: .45rem; align-items: center; margin-top: .75rem; font-size: .92rem; color: var(--muted); }
+.meter { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 1.1rem 0 .5rem; }
+.meter span { height: 12px; border-radius: 99px; background: var(--surface-3); transition: background-color .3s; }
+.meter[data-level="0"] span:nth-child(-n+1),
+.meter[data-level="1"] span:nth-child(-n+2) { background: var(--bad); }
+.meter[data-level="2"] span:nth-child(-n+3) { background: var(--warn); }
+.meter[data-level="3"] span:nth-child(-n+4),
+.meter[data-level="4"] span:nth-child(-n+5) { background: var(--ok); }
+.pw-verdict { font-weight: 750; font-size: 1.1rem; margin: 0 0 .2rem; min-height: 1.6em; }
+.pw-verdict.l0, .pw-verdict.l1 { color: var(--bad-ink); }
+.pw-verdict.l2 { color: var(--warn-ink); }
+.pw-verdict.l3, .pw-verdict.l4 { color: var(--ok-ink); }
+.pw-note { color: var(--muted); margin: 0 0 .8rem; min-height: 1.6em; }
+.checks { list-style: none; padding: 0; margin: 0; display: grid; gap: .4rem; }
+.checks li { display: flex; gap: .6rem; align-items: flex-start; }
+.checks .mark { flex: none; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: grid; place-items: center; background: var(--surface-3); color: var(--muted); font-size: .85rem; font-weight: 900; margin-top: .12rem; }
+.checks li.yes .mark { background: var(--ok); color: var(--on-ok); }
+.checks li.no .mark { background: var(--bad-soft); color: var(--bad-ink); }
+
+/* 5. Kódolvasó */
+.code-stage { display: grid; gap: 1rem; }
+.situation { font-size: 1.05rem; font-weight: 600; margin: 0; }
+.sms-card { max-width: 440px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: .9rem 1.05rem; box-shadow: var(--shadow); }
+.sms-card .sms-from { display: flex; align-items: center; gap: .5rem; font-size: .85rem; font-weight: 750; color: var(--muted); margin-bottom: .4rem; }
+.sms-card .sms-from .ico { color: var(--primary); }
+.sms-card p { margin: 0; font-size: 1.02rem; }
+.step-dots { display: flex; gap: .4rem; }
+.step-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--surface-3); }
+.step-dots span.on { background: var(--primary); }
+.step-dots span.ok { background: var(--ok); }
+.step-dots span.bad { background: var(--bad); }
+
+/* 6. MI-forgatókönyvek */
+.scen-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1rem; }
+.scen { background: var(--surface); border: 2px solid var(--border); border-radius: 18px; padding: 1rem 1.1rem 1.1rem; display: flex; flex-direction: column; transition: border-color .25s; }
+.scen.is-correct { border-color: var(--ok); }
+.scen.is-wrong { border-color: var(--bad); }
+.scen-type { display: flex; align-items: center; gap: .45rem; font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 .5rem; }
+.scen-text { flex: 1; margin: 0 0 .9rem; font-size: 1rem; }
+.scen .btn-row { gap: .5rem; }
+.scen .btn-row .btn { flex: 1 1 auto; white-space: nowrap; padding-inline: .8rem; }
+
+/* 7. Ellenőrzőlista */
+.checklist { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+.check { display: flex; gap: .85rem; align-items: flex-start; background: var(--surface); border: 2px solid var(--border); border-radius: 14px; padding: .8rem 1rem; cursor: pointer; transition: border-color .2s, background-color .2s; }
+.check input { width: 26px; height: 26px; margin: .1rem 0 0; flex: none; accent-color: var(--ok); cursor: pointer; }
+.check.on { border-color: var(--ok); background: var(--ok-soft); }
+.check-meter { height: 12px; border-radius: 99px; background: var(--surface-3); overflow: hidden; margin: 1.1rem 0 .6rem; }
+.check-meter span { display: block; height: 100%; width: 0; background: var(--ok); border-radius: inherit; transition: width .4s ease; }
+
+/* 8. Vészhelyzeti kártya */
+.ecard-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 1.3rem; align-items: start; }
+@media (max-width: 760px) { .ecard-grid { grid-template-columns: minmax(0, 1fr); } }
+.ecard-form { display: grid; gap: .9rem; }
+.ecard { background: #fff; color: #161616; border: 3px solid #c0262d; border-radius: 18px; overflow: hidden; font-size: .95rem; line-height: 1.45; box-shadow: var(--shadow); }
+.ecard-head { background: #c0262d; color: #fff; padding: .7rem 1rem; display: flex; align-items: center; gap: .6rem; font-weight: 800; letter-spacing: .02em; }
+.ecard-body { padding: .9rem 1rem 1rem; }
+.ecard ol { margin: 0; padding-left: 1.3rem; display: grid; gap: .45rem; }
+.ecard .big { display: block; font-size: 1.3rem; font-weight: 850; letter-spacing: .02em; color: #0d2461; }
+.ecard .placeholder { color: #8a8a8a; font-weight: 500; font-style: italic; font-size: 1rem; }
+.ecard-foot { margin-top: .8rem; padding: .6rem .8rem; background: #fff3d6; border-radius: 10px; font-weight: 750; color: #5a3600; }
+
+/* =========================================================
+   9. Összefoglaló
+   ========================================================= */
+.rules { list-style: none; counter-reset: r; margin: 1.2rem 0 1.4rem; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: .85rem; }
+.rules li { counter-increment: r; position: relative; background: var(--surface-2); border: 1px solid var(--border); border-radius: 16px; padding: .95rem 1rem .95rem 3.6rem; font-weight: 600; line-height: 1.45; }
+.rules li::before { content: counter(r); position: absolute; left: .9rem; top: .85rem; width: 2rem; height: 2rem; border-radius: 10px; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; font-weight: 850; }
+
+/* =========================================================
+   10. Teszt
+   ========================================================= */
+.quiz-list { list-style: none; margin: 1.4rem 0 0; padding: 0; display: grid; gap: 1.1rem; }
+.q fieldset { min-width: 0; margin: 0; border: 2px solid var(--border); border-radius: 18px; padding: 1.1rem 1.1rem 1.15rem; background: var(--surface); transition: border-color .25s; }
+.q.missing fieldset { border-color: var(--warn); box-shadow: 0 0 0 4px color-mix(in srgb, var(--warn) 22%, transparent); }
+.q.q-right fieldset { border-color: var(--ok); }
+.q.q-wrong fieldset { border-color: var(--bad); }
+.q legend { float: left; width: 100%; padding: 0; margin: 0 0 .85rem; font-weight: 700; font-size: 1.08rem; line-height: 1.45; display: flex; gap: .6rem; }
+.q legend + * { clear: both; }
+.q-num { flex: none; width: 2rem; height: 2rem; border-radius: 10px; background: var(--primary-soft); color: var(--primary-ink); display: grid; place-items: center; font-size: .95rem; font-weight: 850; }
+.q-right .q-num { background: var(--ok); color: var(--on-ok); }
+.q-wrong .q-num { background: var(--bad); color: var(--on-bad); }
+.opts { display: grid; gap: .5rem; }
+.opt { position: relative; display: flex; flex-wrap: wrap; align-items: flex-start; gap: .75rem; padding: .7rem .9rem; border: 2px solid var(--border); border-radius: 14px; cursor: pointer; background: var(--surface-2); transition: border-color .2s, background-color .2s; }
+.opt:hover { border-color: var(--primary); }
+.opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.opt-letter { flex: none; width: 1.9rem; height: 1.9rem; border-radius: 50%; border: 2px solid var(--border); display: grid; place-items: center; font-weight: 800; font-size: .9rem; background: var(--surface); color: var(--muted); transition: all .2s; }
+.opt-text { flex: 1 1 0; min-width: 0; padding-top: .1rem; }
+.opt.selected { border-color: var(--primary); background: var(--primary-soft); }
+.opt.selected .opt-letter { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.opt:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.opt.is-correct { border-color: var(--ok); background: var(--ok-soft); }
+.opt.is-correct .opt-letter { background: var(--ok); border-color: var(--ok); color: var(--on-ok); }
+.opt.is-wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt.is-wrong .opt-letter { background: var(--bad); border-color: var(--bad); color: var(--on-bad); }
+.opt-mark { flex: none; margin-left: auto; font-size: .82rem; font-weight: 800; align-self: center; white-space: nowrap; }
+.opt-mark:empty { display: none; }
+.opt.is-correct .opt-mark { color: var(--ok-ink); }
+.opt.is-wrong .opt-mark { color: var(--bad-ink); }
+.evaluated .opt { cursor: default; }
+.evaluated .opt:hover { border-color: inherit; }
+.evaluated .opt:not(.is-correct):not(.is-wrong) { opacity: .7; }
+.q-feedback { margin-top: .85rem; padding: .75rem .95rem; border-radius: 12px; font-size: .97rem; }
+.q-feedback.ok { background: var(--ok-soft); color: var(--ok-ink); }
+.q-feedback.bad { background: var(--bad-soft); color: var(--bad-ink); }
+.q-feedback a { color: inherit; font-weight: 750; white-space: nowrap; }
+.quiz-bar { position: sticky; bottom: 12px; z-index: 5; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .8rem; margin-top: 1.3rem; padding: .8rem .9rem .8rem 1.2rem; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; box-shadow: 0 10px 30px rgba(0, 0, 0, .14); }
+.quiz-bar p { margin: 0; font-weight: 650; }
+.quiz-bar p.warn { color: var(--warn-ink); }
+.quiz-result { margin-top: 1.6rem; border-radius: 20px; padding: clamp(18px, 3.5vw, 32px); border: 2px solid; animation: pop .45s ease; }
+.quiz-result.ok { background: var(--ok-soft); border-color: color-mix(in srgb, var(--ok) 45%, transparent); }
+.quiz-result.warn { background: var(--warn-soft); border-color: var(--warn-border); }
+.quiz-result.bad { background: var(--bad-soft); border-color: color-mix(in srgb, var(--bad) 45%, transparent); }
+.result-top { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.ring-wrap { position: relative; width: 140px; height: 140px; flex: none; }
+.ring { width: 140px; height: 140px; }
+.ring circle { fill: none; stroke-width: 12; }
+.ring .ring-bg { stroke: color-mix(in srgb, var(--text) 10%, transparent); }
+.ring .ring-fg { stroke-linecap: round; transition: stroke-dashoffset 1.2s cubic-bezier(.2, .8, .2, 1); }
+.quiz-result.ok .ring-fg { stroke: var(--ok); }
+.quiz-result.warn .ring-fg { stroke: var(--warn); }
+.quiz-result.bad .ring-fg { stroke: var(--bad); }
+.ring-label { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; line-height: 1.1; }
+.ring-label strong { font-size: 2rem; }
+.ring-label span { font-size: .9rem; color: var(--muted); }
+.result-text { flex: 1; min-width: 230px; }
+.result-text h3 { margin: 0 0 .4rem; font-size: 1.5rem; }
+.result-text p { margin: 0 0 .5rem; }
+.pass { display: inline-flex; align-items: center; gap: .4rem; padding: .25rem .8rem; border-radius: 99px; font-weight: 750; font-size: .9rem; margin-bottom: .6rem; }
+.pass.yes { background: var(--ok); color: var(--on-ok); }
+.pass.no { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+.review-links { display: flex; flex-wrap: wrap; gap: .45rem; margin: .6rem 0 0; padding: 0; list-style: none; }
+.review-links a { display: inline-flex; padding: .3rem .8rem; border-radius: 99px; background: var(--surface); border: 1px solid var(--border); text-decoration: none; font-weight: 650; font-size: .92rem; }
+.review-links a:hover { border-color: var(--primary); }
+
+/* =========================================================
+   11. Lábléc, felugrók, technológiai leírás
+   ========================================================= */
+.site-footer { margin-top: 4rem; background: var(--surface); border-top: 1px solid var(--border); padding: 2.6rem 16px 3rem; }
+.footer-inner { max-width: 900px; margin: 0 auto; display: grid; gap: 1.2rem; }
+.footer-inner p { margin: 0; color: var(--muted); font-size: .93rem; }
+.footer-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+
+#to-top { position: fixed; right: 16px; bottom: 16px; z-index: 40; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--text); box-shadow: var(--shadow); display: grid; place-items: center; cursor: pointer; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .25s, transform .25s; }
+#to-top.show { opacity: 1; transform: none; pointer-events: auto; }
+#to-top:hover { color: var(--primary-ink); border-color: var(--primary); }
+body.quiz-in-view #to-top { bottom: 96px; }
+
+#toast { position: fixed; left: 50%; bottom: 24px; z-index: 120; transform: translate(-50%, 20px); max-width: min(92vw, 520px); background: #14203a; color: #fff; padding: .8rem 1.15rem; border-radius: 14px; box-shadow: 0 14px 36px rgba(0, 0, 0, .3); font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s; text-align: center; }
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+:root[data-theme="dark"] #toast { background: #e9eef8; color: #0d1320; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #toast { background: #e9eef8; color: #0d1320; } }
+
+dialog.tech { width: min(940px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); padding: 0; border: none; border-radius: 22px; background: var(--surface); color: var(--text); box-shadow: 0 30px 80px rgba(0, 0, 0, .45); overflow: auto; overscroll-behavior: contain; }
+dialog.tech::backdrop { background: rgba(6, 12, 28, .62); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+dialog.tech[open] { animation: dlg .3s ease; }
+@keyframes dlg { from { opacity: 0; transform: translateY(16px) scale(.985); } to { opacity: 1; transform: none; } }
+.tech-head { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem clamp(16px, 3vw, 32px); background: var(--surface); border-bottom: 1px solid var(--border); }
+.tech-head h2 { margin: 0; font-size: 1.5rem; }
+.icon-btn { width: 46px; height: 46px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text); display: grid; place-items: center; cursor: pointer; flex: none; }
+.icon-btn:hover { border-color: var(--primary); color: var(--primary-ink); }
+.tech-body { padding: 1.3rem clamp(16px, 3vw, 32px) 2.2rem; }
+.tech-body section { scroll-margin-top: 90px; margin-top: 2rem; }
+.tech-body h3 { display: flex; align-items: center; gap: .6rem; font-size: 1.25rem; margin: 0 0 .8rem; padding-bottom: .5rem; border-bottom: 2px solid var(--primary-soft); }
+.tech-body h3 .n { width: 2rem; height: 2rem; border-radius: 10px; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; font-size: .95rem; flex: none; }
+.tech-body h4 { margin: 1.2rem 0 .5rem; font-size: 1.04rem; }
+.tech-body ul { margin: 0 0 1rem; padding-left: 1.3rem; display: grid; gap: .4rem; }
+.tech-nav { display: flex; flex-wrap: wrap; gap: .45rem; }
+.tech-nav a { padding: .35rem .85rem; border-radius: 99px; border: 1px solid var(--border); background: var(--surface-2); text-decoration: none; font-weight: 650; font-size: .9rem; color: var(--text); }
+.tech-nav a:hover { border-color: var(--primary); color: var(--primary-ink); }
+.spec { display: grid; grid-template-columns: max-content 1fr; gap: .55rem 1.2rem; margin: 1.4rem 0 0; padding: 1.1rem 1.2rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 16px; }
+.spec dt { font-weight: 750; color: var(--muted); }
+.spec dd { margin: 0; }
+@media (max-width: 600px) { .spec { grid-template-columns: 1fr; gap: .1rem; } .spec dd { margin-bottom: .6rem; } }
+.stack { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0 !important; }
+.stack li { padding: .2rem .7rem; border-radius: 8px; background: var(--primary-soft); color: var(--primary-ink); font-size: .88rem; font-weight: 650; }
+.timeline { list-style: none; padding: 0 !important; margin: 0 0 1rem; display: grid; gap: 0 !important; }
+.timeline li { position: relative; padding: 0 0 1.1rem 2.4rem; }
+.timeline li::before { content: ""; position: absolute; left: .62rem; top: 1.6rem; bottom: 0; width: 2px; background: var(--border); }
+.timeline li:last-child::before { display: none; }
+.timeline .tl-dot { position: absolute; left: 0; top: .2rem; width: 1.45rem; height: 1.45rem; border-radius: 50%; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; font-size: .75rem; font-weight: 850; }
+.timeline .tl-dot.todo-dot { background: var(--surface-3); color: var(--muted); }
+.timeline strong { display: block; }
+.prompt-box { position: relative; margin: .5rem 0 1rem; }
+.prompt-box pre { margin: 0; white-space: pre-wrap; word-break: break-word; background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.1rem; padding-top: 2.9rem; font-family: ui-monospace, "Cascadia Mono", Consolas, "Liberation Mono", monospace; font-size: .86rem; line-height: 1.6; }
+.prompt-box .btn { position: absolute; top: .5rem; right: .5rem; }
+.prompt-box .label { position: absolute; top: .85rem; left: 1.1rem; font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.todo { display: inline-block; border: 2px dashed var(--warn); color: var(--warn-ink); background: var(--warn-soft); border-radius: 8px; padding: 0 .5rem; font-weight: 650; font-size: .92em; }
+
+/* =========================================================
+   12. Nyomtatás
+   ========================================================= */
+#print-root { display: none; }
+@media print {
+  :root { --bg: #fff; --surface: #fff; --surface-2: #fff; --text: #000; --muted: #333; --border: #bbb; }
+  html { font-size: 11pt; }
+  body { background: #fff; color: #000; }
+  .toolbar, .hero-art, .hero-actions, .tts-btn, .lesson-foot, .exercise, #to-top, #toast, .site-footer .footer-actions, .quiz-bar, dialog, .skip-link, .toc { display: none !important; }
+  .hero { background: #fff !important; color: #000; padding: 0 0 1rem; }
+  .hero .eyebrow, .chips li { border-color: #999; background: #fff; }
+  .hero h1 em { color: #000; background: none; -webkit-text-fill-color: #000; }
+  .intro { margin-top: 0; }
+  .card { box-shadow: none; border: 1px solid #bbb; }
+  .lesson { break-inside: auto; }
+  .dd, .tip, .keybox, .steps li, .rules li { break-inside: avoid; }
+  body.print-card-only > *:not(#print-root) { display: none !important; }
+  body.print-card-only #print-root { display: block !important; padding: 0; }
+  #print-root .ecard { max-width: 12cm; box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* A rácsok elemei ne nőhessenek a tárolójuknál szélesebbre (hosszú szavak, webcímek) */
+.quiz-list, .opts, .facts, .howto, .url-list, .checklist, .steps, .flag-list, .code-stage, .ecard-form, .checks, .choices, .dd ul, .ecard ol { grid-template-columns: minmax(0, 1fr); }
+.flag-list li > span, .checks li > span, .howto li > span, .check > span, .tip > p, .privacy > span { min-width: 0; }
+.wrap > *, .card, .exercise, .lesson-body { min-width: 0; }
+
+/* Telefonméretű kijelző: kevesebb egymásba ágyazott belső margó, hogy a szöveg kiférjen */
+@media (max-width: 560px) {
+  .card { padding: 22px 14px; border-radius: 18px; }
+  .exercise { padding: 16px 12px; margin-inline: -4px; border-radius: 16px; }
+  .url-item, .scen { padding: .8rem .75rem; }
+  .q fieldset { padding: .9rem .75rem; }
+  .opt { padding: .6rem .65rem; gap: .6rem; }
+  .opt-mark { flex-basis: 100%; text-align: right; }
+  .q legend { font-size: 1rem; }
+  .dd { padding: .95rem .9rem; }
+  .tip { padding: .9rem .9rem; }
+  .keybox { padding: .95rem 1rem .95rem 1.1rem; }
+  .phone { border-width: 8px; border-radius: 30px; padding: 12px 10px 14px; }
+  .steps li { padding: .85rem .9rem .85rem 3.4rem; }
+  .steps li::before { left: .75rem; }
+  .eyebrow { font-size: .72rem; letter-spacing: .05em; }
+  .hero-art { max-width: 220px; }
+  .golden { grid-template-columns: 1fr; gap: .6rem; padding: 1rem; }
+  .lesson-head .tts-btn { margin-left: auto; }
+  .badge-icon { width: 46px; height: 46px; border-radius: 14px; }
+  .badge-icon .ico-lg { width: 24px; height: 24px; }
+  .title-group { gap: .75rem; }
+}
+@media (max-width: 380px) {
+  .scen .btn-row .btn, .q-feedback a { white-space: normal; }
+  .progress-text { display: none; }
+  .tool-btn { min-width: 42px; padding: 0 .45em; }
+}
+
+/* Mozgáscsökkentés */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Ugrás a tartalomra</a>
+
+<!-- Ikonkészlet (beágyazott SVG) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M11.4 11.6L21 2M16 7l3 3M19 4l2 2"/></symbol>
+  <symbol id="i-otp" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M11 18h2"/><path d="M9 10l2 2 4-4"/></symbol>
+  <symbol id="i-ai" viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/><path d="M5 15.5l.6 1.4 1.4.6-1.4.6L5 19.5l-.6-1.4-1.4-.6 1.4-.6z"/></symbol>
+  <symbol id="i-device" viewBox="0 0 24 24"><rect x="2" y="4" width="15" height="11" rx="1.5"/><path d="M6 19h7M9.5 15v4"/><rect x="16" y="9" width="6" height="11" rx="1.2"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+  <symbol id="i-quiz" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2M12 20.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1.5 12h2M20.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+</svg>
+
+<header class="toolbar">
+  <div class="toolbar-inner">
+    <a class="brand" href="#top" aria-label="Biztonságos netbank – vissza az elejére">
+      <svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg><span>Biztonságos netbank</span>
+    </a>
+    <div class="progress-wrap">
+      <span class="progress-text" id="progress-text">0/8 lecke</span>
+      <div class="progress" id="progress" role="progressbar" aria-label="Elvégzett leckék" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0"><span id="progress-bar"></span></div>
+    </div>
+    <div class="tools" role="group" aria-label="Megjelenítés">
+      <button type="button" class="tool-btn" id="font-dec" aria-label="Betűméret csökkentése" title="Kisebb betűk"><span class="small-a">A</span>−</button>
+      <button type="button" class="tool-btn" id="font-inc" aria-label="Betűméret növelése" title="Nagyobb betűk">A+</button>
+      <button type="button" class="tool-btn" id="theme-btn" aria-label="Sötét mód bekapcsolása" title="Sötét mód bekapcsolása"><svg class="ico" aria-hidden="true"><use href="#i-moon"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <!-- ============== NYITÓ ============== -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg> Interaktív tudatosító képzés</p>
+        <h1 id="hero-title">Biztonságosan<br>a <em>netbankban</em></h1>
+        <p class="lead">Hogyan ismerje fel a csalókat, és hogyan védje meg a pénzét? Nyolc rövid, gyakorlatias lecke — a végén egy rövid teszttel.</p>
+        <ul class="chips" aria-label="A képzés jellemzői">
+          <li><svg class="ico" aria-hidden="true"><use href="#i-book"/></svg> 8 lecke</li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg> Gyakorlatokkal</li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-quiz"/></svg> 8 kérdéses teszt</li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg> Kb. 20 perc</li>
+        </ul>
+        <div class="hero-actions">
+          <a class="btn btn-lg btn-hero" href="#bevezeto">Kezdjük! <svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></a>
+          <a class="btn btn-lg btn-ghost" href="#teszt">Ugrás a tesztre</a>
+        </div>
+      </div>
+      <svg class="hero-art" viewBox="0 0 360 320" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="g-shield" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b8cff"/><stop offset="1" stop-color="#1f4fd6"/></linearGradient>
+        </defs>
+        <circle cx="180" cy="160" r="146" fill="rgba(255,255,255,.06)"/>
+        <circle cx="180" cy="160" r="104" fill="rgba(255,255,255,.06)"/>
+        <rect x="122" y="30" width="116" height="244" rx="24" fill="#0a1840" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
+        <rect x="131" y="47" width="98" height="212" rx="13" fill="#f4f7ff"/>
+        <rect x="163" y="37" width="34" height="5" rx="2.5" fill="rgba(255,255,255,.4)"/>
+        <path d="M180 82l38 14v29c0 26-17 43-38 52-21-9-38-26-38-52V96z" fill="url(#g-shield)"/>
+        <path d="M163 129l11 11 23-25" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="148" y="196" width="64" height="8" rx="4" fill="#c8d5f6"/>
+        <rect x="156" y="212" width="48" height="8" rx="4" fill="#dde6fb"/>
+        <rect x="146" y="232" width="68" height="15" rx="7.5" fill="#1f4fd6"/>
+        <g class="float f1">
+          <rect x="22" y="76" width="118" height="58" rx="15" fill="#fff"/>
+          <circle cx="49" cy="105" r="14" fill="#fde7e7"/>
+          <path d="M44 100l10 10M54 100l-10 10" stroke="#c0262d" stroke-width="3.2" stroke-linecap="round"/>
+          <rect x="71" y="95" width="56" height="7" rx="3.5" fill="#d9e0ee"/>
+          <rect x="71" y="108" width="38" height="7" rx="3.5" fill="#e8ecf4"/>
+        </g>
+        <g class="float f2">
+          <rect x="220" y="176" width="120" height="58" rx="15" fill="#fff"/>
+          <circle cx="247" cy="205" r="14" fill="#e3f5ea"/>
+          <rect x="241" y="203" width="12" height="9" rx="2" fill="#15803d"/>
+          <path d="M243.5 203v-3a3.5 3.5 0 0 1 7 0v3" fill="none" stroke="#15803d" stroke-width="2.2"/>
+          <rect x="269" y="195" width="58" height="7" rx="3.5" fill="#d9e0ee"/>
+          <rect x="269" y="208" width="40" height="7" rx="3.5" fill="#e8ecf4"/>
+        </g>
+        <path class="twinkle" d="M300 62l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="#ffd166"/>
+        <path class="twinkle t2" d="M58 222l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#9db9ff"/>
+      </svg>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <noscript><p class="tip tip-warn">A gyakorlatokhoz és a teszthez engedélyezze a JavaScriptet a böngészőben. A leckék szövege enélkül is olvasható.</p></noscript>
+
+    <!-- ============== BEVEZETŐ ============== -->
+    <section class="card intro lesson-like" id="bevezeto" aria-labelledby="bevezeto-cim">
+      <div class="section-head">
+        <div class="title-group">
+          <div class="badge-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-info"/></svg></div>
+          <div>
+            <p class="kicker">Bevezető</p>
+            <h2 id="bevezeto-cim">Miért fontos ez?</h2>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm tts-btn" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-speaker"/></svg><span>Felolvasás</span></button>
+      </div>
+      <div class="lesson-body">
+        <p>A netbank kényelmes és biztonságos — ha tudatosan használjuk. A csalók ma már ritkán a bankok rendszereit törik fel. Inkább az embereket próbálják becsapni: megijesztik, sürgetik, vagy elnyerik a bizalmukat, hogy az áldozat maga adja ki az adatait, vagy maga utalja el a pénzét.</p>
+        <p>A jó hír: néhány egyszerű szabállyal a csalások többsége kivédhető. Ez a rövid képzés ezeket mutatja be, gyakorlatokkal.</p>
+        <div class="golden">
+          <div class="g-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-shield"/></svg></div>
+          <div>
+            <h3>Az aranyszabály</h3>
+            <p><strong>A bank soha nem kéri el Öntől a jelszavát, a PIN-kódját, az SMS-ben kapott kódot vagy a kártyaadatait</strong> — sem telefonon, sem e-mailben, sem üzenetben. Aki ezt kéri, csaló.</p>
+            <p>Ha sürgetik: álljon meg. Tegye le a telefont, ne kattintson — és Ön keresse meg a bankot a hivatalos elérhetőségén.</p>
+          </div>
+        </div>
+        <h3>Hogyan használja ezt az anyagot?</h3>
+        <ul class="howto">
+          <li><svg class="ico" aria-hidden="true"><use href="#i-book"/></svg><span>Nyolc rövid lecke következik. Mindegyik egy gyakorlattal zárul.</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Ha végzett egy leckével, kattintson a „Megértettem, tovább” gombra. Az oldal megjegyzi, hol tart.</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-speaker"/></svg><span>A jobb felső sarokban nagyobbra állíthatja a betűket (A+), és sötét módra is válthat. A leckéket a „Felolvasás” gombbal fel is olvastathatja.</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-quiz"/></svg><span>A végén egy 8 kérdéses teszttel ellenőrizheti a tudását.</span></li>
+        </ul>
+        <p class="privacy no-tts"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg><span>Az oldal semmilyen adatot nem küld el, és nem követi Önt. A gyakorlatokban beírt szöveg az Ön gépén marad. A példákban szereplő „Példa Bank”, valamint a nevek, címek és telefonszámok kitaláltak.</span></p>
+      </div>
+    </section>
+
+    <!-- ============== TARTALOM ============== -->
+    <nav class="toc" id="tartalom" aria-labelledby="toc-cim">
+      <h2 id="toc-cim">A képzés tartalma</h2>
+      <ol class="toc-grid">
+        <li><a href="#lecke-1" data-toc="1"><span class="toc-num">1</span><span class="toc-title">Csak biztos úton lépjen be</span><span class="toc-status">Még hátravan</span></a></li>
+        <li><a href="#lecke-2" data-toc="2"><span class="toc-num">2</span><span class="toc-title">Gyanús üzenetek</span><span class="toc-status">Még hátravan</span></a></li>
+        <li><a href="#lecke-3" data-toc="3"><span class="toc-num">3</span><span class="toc-title">Telefonos csalók</span><span class="toc-status">Még hátravan</span></a></li>
+        <li><a href="#lecke-4" data-toc="4"><span class="toc-num">4</span><span class="toc-title">Jelszó és PIN-kód</span><span class="toc-status">Még hátravan</span></a></li>
+        <li><a href="#lecke-5" data-toc="5"><span class="toc-num">5</span><span class="toc-title">Megerősítő kód és jóváhagyás</span><span class="toc-status">Még hátravan</span></a></li>
+        <li><a href="#lecke-6" data-toc="6"><span class="toc-num">6</span><span class="toc-title">Csalás mesterséges intelligenciával</span><span class="toc-status">Még hátravan</span></a></li>
+        <li><a href="#lecke-7" data-toc="7"><span class="toc-num">7</span><span class="toc-title">Biztonságos eszköz</span><span class="toc-status">Még hátravan</span></a></li>
+        <li><a href="#lecke-8" data-toc="8"><span class="toc-num">8</span><span class="toc-title">Figyelés és vészhelyzet</span><span class="toc-status">Még hátravan</span></a></li>
+        <li><a href="#teszt" class="toc-test"><span class="toc-num"><svg class="ico" aria-hidden="true"><use href="#i-quiz"/></svg></span><span class="toc-title">Záróteszt</span><span class="toc-status" id="toc-test-status">8 kérdés</span></a></li>
+      </ol>
+    </nav>
+
+    <!-- ============== 1. LECKE ============== -->
+    <article class="card lesson" id="lecke-1" data-lesson="1" aria-labelledby="lecke-1-cim">
+      <header class="lesson-head">
+        <div class="title-group">
+          <div class="badge-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-lock"/></svg></div>
+          <div>
+            <p class="kicker">1. lecke <span class="done-pill"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Elvégezve</span></p>
+            <h2 id="lecke-1-cim">Csak biztos úton lépjen be</h2>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm tts-btn" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-speaker"/></svg><span>Felolvasás</span></button>
+      </header>
+      <div class="keybox"><p class="keybox-label">Röviden</p><p>A netbankba mindig a saját útján lépjen be: a bank hivatalos alkalmazásával, vagy a saját maga által beírt címen. Kapott linkre kattintva soha ne lépjen be.</p></div>
+      <div class="lesson-body">
+        <p>A csalók a bankok weboldalát tökéletesen le tudják másolni. A hamis oldal pontosan úgy néz ki, mint az igazi — de amit ott beír, az egyenesen a csalókhoz kerül.</p>
+        <div class="dodont">
+          <div class="dd do">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-check"/></svg></span>Így helyes</h3>
+            <ul>
+              <li>Használja a bank hivatalos mobilalkalmazását.</li>
+              <li>Számítógépen egyszer írja be a bank címét saját kezűleg, és mentse el könyvjelzőként (kedvencként). Ezután mindig onnan nyissa meg.</li>
+              <li>Belépés előtt pillantson rá a címsorra: valóban a bankja címe áll ott?</li>
+            </ul>
+          </div>
+          <div class="dd dont">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-x"/></svg></span>Kerülje</h3>
+            <ul>
+              <li>Ne lépjen be e-mailben, SMS-ben vagy közösségi oldalon kapott linkről.</li>
+              <li>Ne kattintson a keresőben a „Szponzorált” vagy „Hirdetés” jelölésű találatra — csalók is vásárolhatnak hirdetést.</li>
+            </ul>
+          </div>
+        </div>
+        <h3>Hogyan olvassa a webcímet?</h3>
+        <p>Keresse meg a címben a https:// utáni első „/” (perjel) jelet. Közvetlenül előtte áll a weboldal valódi gazdája. (Ha nincs ilyen jel, akkor a cím legvége.) Csak akkor lépjen be, ha ez betűre pontosan az Ön bankjának címe.</p>
+        <figure class="anatomy no-tts" aria-label="Példa: egy webcím részei">
+          <div class="anatomy-row">
+            <div class="seg"><code>https://</code><span>titkosított kapcsolat</span></div>
+            <div class="seg"><code>netbank.</code><span>a bank aloldala</span></div>
+            <div class="seg seg-owner"><code>peldabank.hu</code><span>A GAZDA — ezt ellenőrizze!</span></div>
+            <div class="seg"><code>/belepes</code><span>oldal a weboldalon belül</span></div>
+          </div>
+        </figure>
+        <div class="tip tip-warn">
+          <svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>
+          <p><strong>Tudta?</strong> A lakat ikon a címsorban csak annyit jelent, hogy a kapcsolat titkosított. Azt nem garantálja, hogy az oldal valódi: a csalók oldalán is lehet lakat.</p>
+        </div>
+      </div>
+      <div class="exercise" id="ex-url">
+        <span class="ex-tag"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Gyakorlat</span>
+        <h3>Melyik cím valódi?</h3>
+        <p class="ex-intro">A Példa Bank valódi címe: <strong class="mono">peldabank.hu</strong>. Döntse el mindegyik címről, hogy valódi vagy hamis!</p>
+        <ol class="url-list" id="url-list"></ol>
+        <div class="ex-score">
+          <span class="pill" id="url-score" role="status" aria-live="polite">Megválaszolva: 0 / 5</span>
+          <button type="button" class="btn btn-secondary btn-sm" id="url-reset"><svg class="ico" aria-hidden="true"><use href="#i-refresh"/></svg>Újrakezdés</button>
+        </div>
+      </div>
+      <footer class="lesson-foot"><button type="button" class="btn btn-primary complete-btn"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Megértettem, tovább</span></button></footer>
+    </article>
+
+    <!-- ============== 2. LECKE ============== -->
+    <article class="card lesson" id="lecke-2" data-lesson="2" aria-labelledby="lecke-2-cim">
+      <header class="lesson-head">
+        <div class="title-group">
+          <div class="badge-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-mail"/></svg></div>
+          <div>
+            <p class="kicker">2. lecke <span class="done-pill"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Elvégezve</span></p>
+            <h2 id="lecke-2-cim">Gyanús üzenetek: e-mail, SMS, csevegő</h2>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm tts-btn" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-speaker"/></svg><span>Felolvasás</span></button>
+      </header>
+      <div class="keybox"><p class="keybox-label">Röviden</p><p>Ha egy üzenet sürget, megijeszt, vagy arra kéri, hogy egy linkre kattintva adja meg az adatait — álljon meg. Szinte biztosan csalás.</p></div>
+      <div class="lesson-body">
+        <p>Az ilyen üzenetet adathalász üzenetnek nevezzük. Célja, hogy hamis weboldalra csalja, vagy közvetlenül elkérje az adatait. Érkezhet a bank, a posta, egy futárszolgálat, a közműszolgáltató vagy egy hivatal nevében — e-mailben, SMS-ben vagy csevegőalkalmazásban (például Messenger, WhatsApp, Viber).</p>
+        <h3>Árulkodó jelek</h3>
+        <ul class="facts">
+          <li><strong>Sürgetés vagy fenyegetés:</strong> „24 órán belül letiltjuk a számláját!”</li>
+          <li><strong>Link,</strong> amelyre kattintva „ellenőriznie” vagy „frissítenie” kell az adatait.</li>
+          <li><strong>Ismeretlen vagy furcsa feladó:</strong> külföldi telefonszám, szokatlan e-mail-cím.</li>
+          <li><strong>Kis összegű díj:</strong> „A csomag kézbesítéséhez fizessen be 490 Ft-ot.” A valódi cél a kártyaadatai megszerzése.</li>
+          <li><strong>Túl szép ajánlat:</strong> nyeremény, visszatérítés, „biztos” befektetés.</li>
+        </ul>
+        <div class="tip tip-warn">
+          <svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>
+          <p><strong>Figyelem!</strong> Régen a helyesírási hibák árulkodtak. Ma a csalók mesterséges intelligenciával hibátlan, udvarias szöveget írnak — a szép megfogalmazás tehát nem bizonyíték.</p>
+        </div>
+        <div class="dodont">
+          <div class="dd do">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-check"/></svg></span>Így helyes</h3>
+            <ul>
+              <li>Törölje az üzenetet.</li>
+              <li>Ha bizonytalan, lépjen be a megszokott módon (alkalmazás, könyvjelző), és nézze meg ott, van-e valóban teendője.</li>
+              <li>Vagy hívja a bankot a hivatalos számán, amely a kártyája hátoldalán is szerepel.</li>
+            </ul>
+          </div>
+          <div class="dd dont">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-x"/></svg></span>Kerülje</h3>
+            <ul>
+              <li>Ne kattintson a linkre, és ne nyissa meg a csatolt fájlt.</li>
+              <li>Ne válaszoljon, és ne hívja vissza az üzenetben szereplő telefonszámot.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="exercise" id="ex-sms">
+        <span class="ex-tag"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Gyakorlat</span>
+        <h3>Keresse meg a 4 árulkodó jelet!</h3>
+        <p class="ex-intro">Ez az SMS a „Példa Bank” nevében érkezett. Kattintson (koppintson) azokra a részekre, amelyek gyanúsak!</p>
+        <div class="phone">
+          <div class="phone-bar">
+            <span class="avatar" aria-hidden="true"><svg class="ico"><use href="#i-user"/></svg></span>
+            <span class="who"><strong><span class="flag" role="button" tabindex="0" data-flag="1">+44 7700 900461<span class="flag-n" aria-hidden="true">1</span></span></strong><small>SMS · ma 08:14</small></span>
+          </div>
+          <div class="sms-bubble">
+            PeldaBank: Szokatlan belépést észleltünk. <span class="flag" role="button" tabindex="0" data-flag="2">Számláját 24 órán belül LETILTJUK,<span class="flag-n" aria-hidden="true">2</span></span> ha nem <span class="flag" role="button" tabindex="0" data-flag="3">erősíti meg adatait és kártyaszámát<span class="flag-n" aria-hidden="true">3</span></span> itt: <span class="flag sms-link" role="button" tabindex="0" data-flag="4">http://peldabank-ellenorzes.top/belepes<span class="flag-n" aria-hidden="true">4</span></span>
+            <span class="sms-time">08:14</span>
+          </div>
+        </div>
+        <ul class="flag-list" id="flag-list" aria-live="polite">
+          <li data-flag="1" hidden><span class="n">1</span><span><strong>Ismeretlen, külföldi feladó.</strong> A bankok SMS-ei általában a bank nevével érkeznek. Vigyázat: a feladó neve is hamisítható, ezért önmagában a név sem bizonyíték!</span></li>
+          <li data-flag="2" hidden><span class="n">2</span><span><strong>Sürgetés és fenyegetés.</strong> A csaló időnyomást kelt, hogy ne legyen ideje gondolkodni.</span></li>
+          <li data-flag="3" hidden><span class="n">3</span><span><strong>Adatkérés.</strong> A bank soha nem kéri üzenetben vagy linken keresztül az adatait — főleg nem a kártyaszámát.</span></li>
+          <li data-flag="4" hidden><span class="n">4</span><span><strong>Hamis link.</strong> Az első „/” előtt a <span class="mono">peldabank-ellenorzes.top</span> áll — ez nem a bank címe.</span></li>
+        </ul>
+        <p class="feedback ok" id="flag-done" hidden role="status">Kiváló! Mind a 4 árulkodó jelet megtalálta. Egy ilyen üzenetet egyszerűen töröljön.</p>
+        <div class="ex-score">
+          <span class="pill" role="status" aria-live="polite">Megtalálva: <span id="flag-count">0</span> / 4</span>
+          <div class="btn-row">
+            <button type="button" class="btn btn-secondary btn-sm" id="flag-all">Mutassa mindet</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="flag-reset"><svg class="ico" aria-hidden="true"><use href="#i-refresh"/></svg>Újrakezdés</button>
+          </div>
+        </div>
+      </div>
+      <footer class="lesson-foot"><button type="button" class="btn btn-primary complete-btn"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Megértettem, tovább</span></button></footer>
+    </article>
+
+    <!-- ============== 3. LECKE ============== -->
+    <article class="card lesson" id="lecke-3" data-lesson="3" aria-labelledby="lecke-3-cim">
+      <header class="lesson-head">
+        <div class="title-group">
+          <div class="badge-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-phone"/></svg></div>
+          <div>
+            <p class="kicker">3. lecke <span class="done-pill"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Elvégezve</span></p>
+            <h2 id="lecke-3-cim">Telefonos csalók és „segítő” alkalmazások</h2>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm tts-btn" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-speaker"/></svg><span>Felolvasás</span></button>
+      </header>
+      <div class="keybox"><p class="keybox-label">Röviden</p><p>Ha „a bank” telefonon hívja, és sürgeti — tegye le. Ezután Ön hívja fel a bankot a kártyája hátoldalán lévő számon.</p></div>
+      <div class="lesson-body">
+        <p>A telefonos csaló banki ügyintézőnek, biztonsági munkatársnak, rendőrnek vagy ügyésznek adja ki magát. Általában azzal kezdi, hogy „gyanús utalást észleltünk”, és ő majd „megmenti” a pénzét. Folyamatosan beszél, sürget, és nem hagy időt gondolkodni.</p>
+        <h3>Amit mindenképp tudnia kell</h3>
+        <ul class="facts">
+          <li><strong>A kijelzőn megjelenő telefonszám hamisítható.</strong> Attól, hogy a bank száma látszik, még csaló is lehet a vonal túlsó végén.</li>
+          <li><strong>A bank soha nem kéri,</strong> hogy átutalja a pénzét egy „biztonsági”, „védett” vagy „ideiglenes” számlára.</li>
+          <li><strong>A bank soha nem kéri,</strong> hogy telepítsen egy alkalmazást (például AnyDesk, TeamViewer, QuickSupport). Ezekkel a csaló távolról látja és irányítja a telefonját vagy számítógépét — és belép a netbankjába.</li>
+          <li><strong>A bank soha nem kéri</strong> telefonon a jelszavát, a kódjait vagy a kártyaadatait.</li>
+        </ul>
+        <div class="dodont">
+          <div class="dd do">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-check"/></svg></span>Így helyes</h3>
+            <ul>
+              <li>Udvariasan, de határozottan tegye le a telefont.</li>
+              <li>Várjon néhány percet (vagy használjon másik telefont), majd hívja a bankot a kártyája hátoldalán vagy a bank honlapján található számon.</li>
+            </ul>
+          </div>
+          <div class="dd dont">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-x"/></svg></span>Kerülje</h3>
+            <ul>
+              <li>Ne telepítsen semmit egy hívó kérésére.</li>
+              <li>Ne mondjon be semmilyen kódot, számot vagy jelszót.</li>
+              <li>Ne utaljon pénzt senki utasítására.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tip tip-bad">
+          <svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>
+          <p><strong>Ha már telepített valamit egy hívó kérésére:</strong> kapcsolja ki a készüléken az internetet (vagy magát a készüléket), és egy másik telefonról azonnal hívja a bankot.</p>
+        </div>
+      </div>
+      <div class="exercise" id="ex-call">
+        <span class="ex-tag"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Gyakorlat</span>
+        <h3>Ön veszi fel a telefont</h3>
+        <p class="ex-intro">Csörög a telefon. Olvassa el, mit mond a hívó, és válassza ki, hogyan reagál!</p>
+        <div class="phone">
+          <div class="phone-bar">
+            <span class="avatar" aria-hidden="true"><svg class="ico"><use href="#i-phone"/></svg></span>
+            <span class="who"><strong>Példa Bank</strong><small>+36 1 555 0100 · a kijelzőn ez látszik</small></span>
+            <span class="call-status" id="call-status" aria-hidden="true">00:00</span>
+          </div>
+          <div class="chat" id="call-chat" aria-live="polite"></div>
+          <div class="choices" id="call-choices"></div>
+          <div id="call-end"></div>
+        </div>
+      </div>
+      <footer class="lesson-foot"><button type="button" class="btn btn-primary complete-btn"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Megértettem, tovább</span></button></footer>
+    </article>
+
+    <!-- ============== 4. LECKE ============== -->
+    <article class="card lesson" id="lecke-4" data-lesson="4" aria-labelledby="lecke-4-cim">
+      <header class="lesson-head">
+        <div class="title-group">
+          <div class="badge-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-key"/></svg></div>
+          <div>
+            <p class="kicker">4. lecke <span class="done-pill"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Elvégezve</span></p>
+            <h2 id="lecke-4-cim">Jelszó és PIN-kód</h2>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm tts-btn" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-speaker"/></svg><span>Felolvasás</span></button>
+      </header>
+      <div class="keybox"><p class="keybox-label">Röviden</p><p>A netbankhoz hosszú, csak ott használt jelszót válasszon, és ne árulja el senkinek.</p></div>
+      <div class="lesson-body">
+        <ul class="facts">
+          <li><strong>Hosszú legyen:</strong> legalább 12 karakter. A hossz többet ér, mint a bonyolultság.</li>
+          <li><strong>Jelmondat:</strong> fűzzön össze 3–4 szót, amelyet Ön könnyen megjegyez, de más nem találna ki. Például: <span class="mono">Kert-Tulipán-Hétfő-42</span> (ezt a példát ne használja!).</li>
+          <li><strong>Egyedi legyen:</strong> a netbank jelszavát sehol máshol ne használja. Ha egy webáruházból ellopják a jelszavakat, a csalók a bankoknál is kipróbálják őket.</li>
+          <li><strong>Ne legyen kitalálható:</strong> születési dátum, név, az unoka neve, 123456 vagy „jelszo”.</li>
+          <li><strong>PIN-kód:</strong> ne írja fel a kártyára, és ne tartsa mellette. Beíráskor takarja el a kezével a billentyűzetet.</li>
+          <li><strong>Ujjlenyomat vagy arcfelismerés:</strong> ha a banki alkalmazás felajánlja, nyugodtan használja — kényelmes és biztonságos.</li>
+        </ul>
+        <div class="tip tip-info">
+          <svg class="ico" aria-hidden="true"><use href="#i-info"/></svg>
+          <p>Jó segítség a <strong>jelszókezelő alkalmazás</strong>: biztonságosan megjegyzi az összes jelszavát, így Önnek csak egyet kell fejben tartania. Ha mégis papírra írja a jelszót, tartsa otthon, elzárva — a kártyától és a telefontól külön.</p>
+        </div>
+      </div>
+      <div class="exercise" id="ex-pw">
+        <span class="ex-tag"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Gyakorlat</span>
+        <h3>Milyen erős ez a jelszó?</h3>
+        <p class="ex-intro">Írjon be egy kitalált jelszót, vagy próbálja ki a példákat. <strong>Fontos: ne a valódi jelszavát írja be!</strong> A beírt szöveg nem hagyja el az Ön gépét.</p>
+        <div class="field">
+          <label for="pw-input">Kitalált jelszó</label>
+          <div class="pw-row">
+            <input class="input" id="pw-input" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Írjon ide egy kitalált jelszót…">
+            <button type="button" class="btn btn-secondary" id="pw-toggle" aria-label="Jelszó megjelenítése" title="Jelszó megjelenítése"><svg class="ico" aria-hidden="true"><use href="#i-eye"/></svg></button>
+          </div>
+        </div>
+        <div class="pw-examples"><span>Próbálja ki:</span>
+          <button type="button" class="btn btn-secondary btn-sm mono" data-pw="123456">123456</button>
+          <button type="button" class="btn btn-secondary btn-sm mono" data-pw="Kati1955">Kati1955</button>
+          <button type="button" class="btn btn-secondary btn-sm mono" data-pw="Napsugar2024!">Napsugar2024!</button>
+          <button type="button" class="btn btn-secondary btn-sm mono" data-pw="Kert-Tulipán-Hétfő-42">Kert-Tulipán-Hétfő-42</button>
+        </div>
+        <div class="meter" id="pw-meter" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <p class="pw-verdict" id="pw-verdict" aria-live="polite">Írjon be egy jelszót!</p>
+        <p class="pw-note" id="pw-note"></p>
+        <ul class="checks" id="pw-checks">
+          <li data-c="len"><span class="mark" aria-hidden="true">•</span><span>Legalább 12 karakter <span class="pw-len"></span></span></li>
+          <li data-c="case"><span class="mark" aria-hidden="true">•</span><span>Kis- és nagybetű is van benne</span></li>
+          <li data-c="mix"><span class="mark" aria-hidden="true">•</span><span>Szám vagy írásjel is van benne</span></li>
+          <li data-c="weak"><span class="mark" aria-hidden="true">•</span><span>Nincs benne könnyen kitalálható rész (pl. 1234, qwerty, évszám, „jelszo”)</span></li>
+        </ul>
+      </div>
+      <footer class="lesson-foot"><button type="button" class="btn btn-primary complete-btn"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Megértettem, tovább</span></button></footer>
+    </article>
+
+    <!-- ============== 5. LECKE ============== -->
+    <article class="card lesson" id="lecke-5" data-lesson="5" aria-labelledby="lecke-5-cim">
+      <header class="lesson-head">
+        <div class="title-group">
+          <div class="badge-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-otp"/></svg></div>
+          <div>
+            <p class="kicker">5. lecke <span class="done-pill"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Elvégezve</span></p>
+            <h2 id="lecke-5-cim">Megerősítő kód és jóváhagyás</h2>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm tts-btn" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-speaker"/></svg><span>Felolvasás</span></button>
+      </header>
+      <div class="keybox"><p class="keybox-label">Röviden</p><p>A megerősítő kód olyan, mint az aláírása. Csak akkor adja meg, ha Ön indította a műveletet — és előtte olvassa el, mit hagy jóvá.</p></div>
+      <div class="lesson-body">
+        <p>Belépéskor és utaláskor a bank egy második lépést is kér: SMS-ben küld egy kódot, vagy a banki alkalmazásban kell jóváhagynia a műveletet. Ezt kétlépcsős azonosításnak nevezzük. Akkor véd igazán, ha a kód csak Önnél marad.</p>
+        <div class="dodont">
+          <div class="dd do">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-check"/></svg></span>Így helyes</h3>
+            <ul>
+              <li>Olvassa végig az üzenetet! Benne van, mit hagy jóvá: az összeg, a kedvezményezett vagy a művelet neve (például „új eszköz regisztrálása” vagy „kártya hozzáadása mobiltárcához”).</li>
+              <li>Csak akkor írja be a kódot, ha minden adat egyezik azzal, amit Ön éppen csinál.</li>
+              <li>Ha nem Ön indította a műveletet, azonnal szóljon a banknak.</li>
+            </ul>
+          </div>
+          <div class="dd dont">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-x"/></svg></span>Kerülje</h3>
+            <ul>
+              <li>Ne mondja meg a kódot senkinek: sem banki ügyintézőnek, sem rendőrnek, sem futárnak, sem családtagnak.</li>
+              <li>Ne hagyjon jóvá váratlan kérést az alkalmazásban csak azért, hogy abbamaradjon az értesítés.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tip tip-warn">
+          <svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>
+          <p>Ha Ön adja ki a kódot, előfordulhat, hogy a bank nem téríti meg a kárt — hiszen a művelet az Ön jóváhagyásával történt.</p>
+        </div>
+      </div>
+      <div class="exercise" id="ex-code">
+        <span class="ex-tag"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Gyakorlat</span>
+        <h3>Olvassa el, mielőtt megadja!</h3>
+        <p class="ex-intro">Három helyzet következik. Mindegyiknél döntse el: megadja-e a kódot?</p>
+        <div class="code-stage" id="code-stage" aria-live="polite"></div>
+      </div>
+      <footer class="lesson-foot"><button type="button" class="btn btn-primary complete-btn"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Megértettem, tovább</span></button></footer>
+    </article>
+
+    <!-- ============== 6. LECKE ============== -->
+    <article class="card lesson" id="lecke-6" data-lesson="6" aria-labelledby="lecke-6-cim">
+      <header class="lesson-head">
+        <div class="title-group">
+          <div class="badge-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-ai"/></svg></div>
+          <div>
+            <p class="kicker">6. lecke <span class="done-pill"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Elvégezve</span></p>
+            <h2 id="lecke-6-cim">Csalás mesterséges intelligenciával</h2>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm tts-btn" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-speaker"/></svg><span>Felolvasás</span></button>
+      </header>
+      <div class="keybox"><p class="keybox-label">Röviden</p><p>Ma már a hang, a fénykép és a videó is hamisítható. Ne a hangnak vagy az arcnak higgyen — ellenőrizzen, mielőtt pénzt küld!</p></div>
+      <div class="lesson-body">
+        <p>A mesterséges intelligencia (röviden MI) hasznos eszköz, de a csalók is használják. A leggyakoribb trükkök:</p>
+        <ul class="facts">
+          <li><strong>Hamisított hang:</strong> néhány másodpercnyi felvételből (például egy közösségi oldalra feltöltött videóból) lemásolják egy családtag hangját. A „bajba jutott unoka” így telefonon kér pénzt.</li>
+          <li><strong>Hamis videó</strong> (deepfake, magyarul mélyhamisítás): ismert emberek — műsorvezetők, orvosok, politikusok — „ajánlanak” biztos befektetést. A videót gép készítette, az illető sosem mondott ilyet.</li>
+          <li><strong>„Szia Anya, ez az új számom!”</strong> — valaki egy ismeretlen számról családtagnak adja ki magát, és sürgősen pénzt kér.</li>
+          <li><strong>Hibátlan, személyre szabott üzenetek:</strong> a csalók az MI segítségével akár az Ön nevével és lakóhelyével írnak meggyőző leveleket.</li>
+        </ul>
+        <div class="dodont">
+          <div class="dd do">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-check"/></svg></span>Így védekezzen</h3>
+            <ul>
+              <li>Beszéljen meg a családjával egy titkos családi jelszót. Ha valaki rokonként pénzt kér, kérdezze meg tőle.</li>
+              <li>Tegye le, és hívja vissza a családtagot a régről ismert számán.</li>
+              <li>Mielőtt fizet, beszéljen valakivel, akiben megbízik.</li>
+            </ul>
+          </div>
+          <div class="dd dont">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-x"/></svg></span>Kerülje</h3>
+            <ul>
+              <li>Ne küldjön pénzt sürgetésre, titokban. A „ne szólj senkinek” mindig figyelmeztető jel.</li>
+              <li>Ne higgyen a „garantált”, magas hozamot ígérő befektetésnek, akárki ajánlja is. Hogy egy cég rendelkezik-e engedéllyel, a Magyar Nemzeti Bank honlapján ellenőrizheti.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="exercise" id="ex-ai">
+        <span class="ex-tag"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Gyakorlat</span>
+        <h3>Gyanús vagy rendben?</h3>
+        <p class="ex-intro">Döntse el mindegyik helyzetről, hogy gyanús-e!</p>
+        <div class="scen-grid" id="scen-grid"></div>
+        <div class="ex-score">
+          <span class="pill" id="scen-score" role="status" aria-live="polite">Megválaszolva: 0 / 4</span>
+          <button type="button" class="btn btn-secondary btn-sm" id="scen-reset"><svg class="ico" aria-hidden="true"><use href="#i-refresh"/></svg>Újrakezdés</button>
+        </div>
+      </div>
+      <footer class="lesson-foot"><button type="button" class="btn btn-primary complete-btn"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Megértettem, tovább</span></button></footer>
+    </article>
+
+    <!-- ============== 7. LECKE ============== -->
+    <article class="card lesson" id="lecke-7" data-lesson="7" aria-labelledby="lecke-7-cim">
+      <header class="lesson-head">
+        <div class="title-group">
+          <div class="badge-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-device"/></svg></div>
+          <div>
+            <p class="kicker">7. lecke <span class="done-pill"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Elvégezve</span></p>
+            <h2 id="lecke-7-cim">Biztonságos eszköz, biztonságos környezet</h2>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm tts-btn" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-speaker"/></svg><span>Felolvasás</span></button>
+      </header>
+      <div class="keybox"><p class="keybox-label">Röviden</p><p>Netbankot a saját, frissített, zárolt képernyőjű telefonján vagy számítógépén használjon — lehetőleg otthon.</p></div>
+      <div class="lesson-body">
+        <div class="dodont">
+          <div class="dd do">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-check"/></svg></span>Így helyes</h3>
+            <ul>
+              <li><strong>Frissítsen:</strong> telepítse a telefon, a számítógép és a banki alkalmazás frissítéseit — ezek biztonsági hibákat javítanak. Legjobb, ha az automatikus frissítés be van kapcsolva.</li>
+              <li><strong>Hivatalos áruház:</strong> alkalmazást csak a Google Play áruházból vagy az App Store-ból töltsön le, és nézze meg, hogy a fejlesztő valóban az Ön bankja.</li>
+              <li><strong>Képernyőzár:</strong> állítson be PIN-kódot, ujjlenyomatot vagy arcfelismerést.</li>
+              <li><strong>Vírusvédelem:</strong> számítógépen legyen bekapcsolva. Windowson a beépített védelem is megfelelő.</li>
+              <li><strong>Kijelentkezés:</strong> használat után lépjen ki a netbankból.</li>
+            </ul>
+          </div>
+          <div class="dd dont">
+            <h3><span class="dot" aria-hidden="true"><svg class="ico"><use href="#i-x"/></svg></span>Kerülje</h3>
+            <ul>
+              <li>Ne netbankoljon nyilvános wifin (kávézó, pályaudvar, szálloda). Útközben inkább a mobilinternetet használja.</li>
+              <li>Ne lépjen be közös vagy idegen számítógépről (könyvtár, szálloda).</li>
+              <li>Ne telepítsen alkalmazást SMS-ben vagy e-mailben kapott linkről.</li>
+              <li>Ne adja oda a feloldott telefonját idegennek, még „egy gyors hívásra” sem.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="exercise" id="ex-check">
+        <span class="ex-tag"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Gyakorlat</span>
+        <h3>Ellenőrizze most a saját eszközét!</h3>
+        <p class="ex-intro">Jelölje be, ami Önre igaz. Ami kimarad, azt érdemes a napokban rendbe tenni — akár egy megbízható ismerős segítségével.</p>
+        <ul class="checklist" id="checklist">
+          <li><label class="check"><input type="checkbox" value="0"><span>A telefonomon / számítógépemen be van kapcsolva az automatikus frissítés.</span></label></li>
+          <li><label class="check"><input type="checkbox" value="1"><span>A banki alkalmazást a hivatalos áruházból (Google Play vagy App Store) töltöttem le.</span></label></li>
+          <li><label class="check"><input type="checkbox" value="2"><span>A telefonomon képernyőzár van (PIN-kód, ujjlenyomat vagy arc).</span></label></li>
+          <li><label class="check"><input type="checkbox" value="3"><span>A számítógépemen be van kapcsolva a vírusvédelem.</span></label></li>
+          <li><label class="check"><input type="checkbox" value="4"><span>Nyilvános wifin és idegen gépen nem netbankolok.</span></label></li>
+          <li><label class="check"><input type="checkbox" value="5"><span>Netbankolás után kijelentkezem.</span></label></li>
+        </ul>
+        <div class="check-meter" aria-hidden="true"><span id="check-bar"></span></div>
+        <p class="feedback warn" id="check-fb" role="status" aria-live="polite">0 / 6 pont teljesül. Kezdje el a bejelölést!</p>
+      </div>
+      <footer class="lesson-foot"><button type="button" class="btn btn-primary complete-btn"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Megértettem, tovább</span></button></footer>
+    </article>
+
+    <!-- ============== 8. LECKE ============== -->
+    <article class="card lesson" id="lecke-8" data-lesson="8" aria-labelledby="lecke-8-cim">
+      <header class="lesson-head">
+        <div class="title-group">
+          <div class="badge-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-bell"/></svg></div>
+          <div>
+            <p class="kicker">8. lecke <span class="done-pill"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Elvégezve</span></p>
+            <h2 id="lecke-8-cim">Figyelje a számláját — baj esetén cselekedjen azonnal</h2>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm tts-btn" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-speaker"/></svg><span>Felolvasás</span></button>
+      </header>
+      <div class="keybox"><p class="keybox-label">Röviden</p><p>Kapcsoljon be értesítést minden számlamozgásról, és állítson be limitet. Ha baj van, minden perc számít: azonnal hívja a bankot.</p></div>
+      <div class="lesson-body">
+        <h3>Megelőzés</h3>
+        <ul class="facts">
+          <li><strong>Értesítés:</strong> kérjen SMS-t vagy alkalmazás-értesítést minden terhelésről. Így azonnal észreveszi, ha valami gyanús történik.</li>
+          <li><strong>Limit:</strong> állítson be napi átutalási és kártyás vásárlási limitet, a szokásos kiadásaihoz igazítva. Kisebb limit — kisebb lehetséges kár.</li>
+          <li><strong>Rendszeres ellenőrzés:</strong> nézze át hetente-havonta a számlatörténetét. Ismeretlen tételt lát? Kérdezzen rá a banknál.</li>
+        </ul>
+        <h3>Ha baj van — ezt tegye, ebben a sorrendben</h3>
+        <ol class="steps">
+          <li><strong>Hívja azonnal a bankot</strong> a hivatalos számán (a kártyája hátoldalán vagy a bank honlapján). Kérje a kártya és a netbank letiltását — ezt sok banki alkalmazásban maga is megteheti. Az azonnali átutalás néhány másodperc alatt megérkezik, ezért minden perc számít.</li>
+          <li><strong>Változtassa meg a jelszavát</strong> egy biztonságos eszközről. Ha egy hívó kérésére alkalmazást telepített, a készüléket vizsgáltassa át szakemberrel.</li>
+          <li><strong>Tegyen feljelentést</strong> a rendőrségen: hívja a 112-t, vagy menjen be bármelyik rendőrkapitányságra.</li>
+          <li><strong>Őrizzen meg minden bizonyítékot:</strong> üzeneteket, hívásnaplót, képernyőképeket, az utalások adatait. Ne törölje őket.</li>
+        </ol>
+        <div class="tip tip-info">
+          <svg class="ico" aria-hidden="true"><use href="#i-info"/></svg>
+          <p><strong>Ne szégyellje!</strong> A csalók profik, bárkit becsaphatnak. Minél hamarabb szól, annál nagyobb az esély arra, hogy a pénzt meg lehet menteni.</p>
+        </div>
+      </div>
+      <div class="exercise" id="ex-ecard">
+        <span class="ex-tag"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Gyakorlat</span>
+        <h3>Készítse el a vészhelyzeti kártyáját!</h3>
+        <p class="ex-intro">Írja be bankja nevét és hivatalos telefonszámát (a bankkártya hátoldalán találja). Nyomtassa ki, és tartsa a telefonja mellett vagy a pénztárcájában. Az adatokat az oldal nem küldi el és nem tárolja.</p>
+        <div class="ecard-grid">
+          <div class="ecard-form">
+            <div class="field"><label for="ec-bank">Bankom neve</label><input class="input" id="ec-bank" type="text" autocomplete="off" placeholder="pl. Példa Bank"></div>
+            <div class="field"><label for="ec-phone">Bankom hivatalos telefonszáma</label><input class="input" id="ec-phone" type="tel" autocomplete="off" placeholder="a kártya hátoldaláról"><span class="hint">Csak a kártyán vagy a bank hivatalos honlapján szereplő számot írja be!</span></div>
+            <div class="field"><label for="ec-helper">Megbízható segítőm (nem kötelező)</label><input class="input" id="ec-helper" type="text" autocomplete="off" placeholder="pl. Anna lányom, 06 30 …"></div>
+            <button type="button" class="btn btn-primary" id="ec-print"><svg class="ico" aria-hidden="true"><use href="#i-print"/></svg>Kártya nyomtatása</button>
+          </div>
+          <div class="ecard" id="ecard" aria-label="Vészhelyzeti kártya előnézete">
+            <div class="ecard-head"><svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>CSALÁS GYANÚJA? CSELEKEDJEN AZONNAL!</div>
+            <div class="ecard-body">
+              <ol>
+                <li>Hívja a bankját: <strong id="ec-bank-out"><span class="placeholder">(bankja neve)</span></strong><span class="big" id="ec-phone-out"><span class="placeholder">(hivatalos telefonszám)</span></span>Kérje a kártya és a netbank letiltását.</li>
+                <li>Változtassa meg a jelszavát — biztonságos eszközről.</li>
+                <li>Tegyen feljelentést: <strong>112</strong> vagy a legközelebbi rendőrkapitányság.</li>
+                <li>Őrizze meg az üzeneteket és a hívásnaplót.</li>
+              </ol>
+              <p id="ec-helper-row" style="margin:.7rem 0 0" hidden>Segítőm: <strong id="ec-helper-out"></strong></p>
+              <div class="ecard-foot">A bank SOHA nem kéri a jelszavát, PIN-kódját vagy SMS-kódját!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="lesson-foot"><button type="button" class="btn btn-primary complete-btn"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Megértettem, tovább</span></button></footer>
+    </article>
+
+    <!-- ============== ÖSSZEFOGLALÓ ============== -->
+    <section class="card lesson-like" id="osszefoglalo" aria-labelledby="osszefoglalo-cim" style="margin:2.6rem 0">
+      <div class="section-head">
+        <div class="title-group">
+          <div class="badge-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-list"/></svg></div>
+          <div>
+            <p class="kicker">Összefoglalás</p>
+            <h2 id="osszefoglalo-cim">8 szabály, amit érdemes megjegyezni</h2>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm tts-btn" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-speaker"/></svg><span>Felolvasás</span></button>
+      </div>
+      <div class="lesson-body">
+        <ol class="rules">
+          <li>Belépés csak a hivatalos alkalmazásból vagy a saját maga által beírt címről.</li>
+          <li>Sürgető, fenyegető üzenet linkjére soha ne kattintson.</li>
+          <li>Ha „a bank” hív és sürget: tegye le, és Ön hívja vissza.</li>
+          <li>Hosszú, egyedi jelszó — amit senkinek nem árul el.</li>
+          <li>Kódot csak akkor adjon meg, ha Ön indította a műveletet, és elolvasta, mit hagy jóvá.</li>
+          <li>Hangnak, videónak ne higgyen vakon — kérdezze meg a családi jelszót.</li>
+          <li>Saját, frissített, zárolt eszköz — nyilvános wifi nem.</li>
+          <li>Értesítés és limit legyen bekapcsolva; baj esetén azonnal hívja a bankot.</li>
+        </ol>
+      </div>
+      <a class="btn btn-primary btn-lg" href="#teszt">Tovább a teszthez <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </section>
+
+    <!-- ============== TESZT ============== -->
+    <section class="card" id="teszt" aria-labelledby="teszt-cim" style="scroll-margin-top:90px">
+      <div class="section-head">
+        <div class="title-group">
+          <div class="badge-icon" aria-hidden="true"><svg class="ico ico-lg"><use href="#i-quiz"/></svg></div>
+          <div>
+            <p class="kicker">Záróteszt</p>
+            <h2 id="teszt-cim">Ellenőrizze a tudását!</h2>
+          </div>
+        </div>
+      </div>
+      <p>8 kérdés — minden leckéből egy. Jelölje meg kérdésenként a helyesnek gondolt választ, majd kattintson a <strong>Kiértékelés</strong> gombra. A sikeres teszthez legalább 6 helyes válasz kell. A válaszok sorrendje minden kitöltéskor változik.</p>
+      <form id="quiz-form" novalidate>
+        <ol class="quiz-list" id="quiz-list"></ol>
+        <div class="quiz-bar" id="quiz-bar">
+          <p id="quiz-status" role="status" aria-live="polite">Megválaszolva: 0 / 8</p>
+          <button type="submit" class="btn btn-primary btn-lg" id="quiz-submit"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Kiértékelés</button>
+        </div>
+      </form>
+      <div class="quiz-result" id="quiz-result" tabindex="-1" hidden></div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p><strong>Biztonságosan a netbankban</strong> — interaktív tudatosító képzés · Mesterséges Intelligencia és Kibervédelem · 2026</p>
+    <p>Az anyag tájékoztató jellegű, oktatási céllal készült. A „Példa Bank”, valamint a példákban szereplő nevek, címek és telefonszámok kitaláltak. Konkrét kérdésekben mindig a saját bankja hivatalos tájékoztatása az irányadó.</p>
+    <div class="footer-actions">
+      <button type="button" class="btn btn-primary" data-open-tech><svg class="ico" aria-hidden="true"><use href="#i-code"/></svg>Technológiai leírás</button>
+      <button type="button" class="btn btn-secondary" id="reset-all"><svg class="ico" aria-hidden="true"><use href="#i-refresh"/></svg><span>Haladás törlése</span></button>
+    </div>
+  </div>
+</footer>
+
+<button type="button" id="to-top" aria-label="Vissza az oldal tetejére" title="Vissza a tetejére"><svg class="ico" aria-hidden="true"><use href="#i-up"/></svg></button>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="print-root" aria-hidden="true"></div>
+
+<!-- ============== REJTETT TARTALOM: TECHNOLÓGIAI LEÍRÁS ============== -->
+<dialog class="tech" id="tech-dialog" aria-labelledby="tech-title">
+  <div class="tech-head">
+    <div>
+      <p class="kicker">A képzés háttere</p>
+      <h2 id="tech-title">Technológiai leírás</h2>
+    </div>
+    <button type="button" class="icon-btn" data-close-tech aria-label="Bezárás" title="Bezárás (Esc)"><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="tech-body">
+    <nav class="tech-nav" aria-label="A leírás részei">
+      <a href="#t-miert">Miért ezt?</a>
+      <a href="#t-nehez">Mi volt nehéz?</a>
+      <a href="#t-iter">Iterációk</a>
+      <a href="#t-prompt">Promptok</a>
+      <a href="#t-ai">AI és modell</a>
+      <a href="#t-tech">Megvalósítás</a>
+    </nav>
+
+    <dl class="spec">
+      <dt>AI szolgáltatás</dt><dd>Anthropic Claude — <strong>Claude Code</strong> (ügynök alapú, parancssori fejlesztőeszköz)</dd>
+      <dt>Modell</dt><dd><strong>Claude Opus 5.5</strong> <span class="mono">(claude-opus-5-5)</span></dd>
+      <dt>Készült</dt><dd>2026. november 22.</dd>
+      <dt>Formátum</dt><dd>Egyetlen önálló HTML-fájl (HTML5 + CSS3 + natív JavaScript), külső függőség nélkül · <span id="tech-size">–</span></dd>
+      <dt>Terjedelem</dt><dd>8 lecke · 8 interaktív gyakorlat · 8 kérdéses, kiértékelő teszt</dd>
+      <dt>Célcsoport</dt><dd>Idősebb, a technológiában kevésbé járatos netbank-felhasználók (és mindenki más)</dd>
+    </dl>
+
+    <section id="t-miert" aria-labelledby="t-miert-h">
+      <h3 id="t-miert-h"><span class="n">1</span>Miért ezt választottuk?</h3>
+      <h4>A téma</h4>
+      <ul>
+        <li>A netbank és a mobilbank ma a mindennapi pénzügyek alapja — egyre többen, egyre idősebb korban is használják.</li>
+        <li>A csalók ma elsősorban nem a bankok rendszereit, hanem az embert támadják (pszichológiai manipuláció, angolul <em>social engineering</em>): hamis hívások, adathalász üzenetek, távoli hozzáférés. Ez ellen a leghatékonyabb védelem a tudatosság — ezért tudatosító képzés.</li>
+        <li>A leginkább veszélyeztetett csoport az idősebb, kevésbé magabiztos felhasználóké. Ezért magázó, rövid mondatos, szakszavakat kerülő (vagy azokat megmagyarázó) nyelvezetet, nagy betűket és felolvasási lehetőséget választottunk.</li>
+        <li>A kurzus témájához (MI és kibervédelem) kettősen kapcsolódik: egy teljes lecke szól az MI-vel támogatott csalásokról (hangklónozás, deepfake, hibátlan adathalász levél), maga az anyag pedig MI segítségével készült.</li>
+      </ul>
+      <h4>A formátum</h4>
+      <ul>
+        <li><strong>Egyetlen HTML-fájl:</strong> nincs telepítés és szerver, offline is működik, GitHub Pages-en közvetlenül közzétehető, e-mailben is továbbküldhető.</li>
+        <li><strong>Nincs külső függőség</strong> (CDN, webes betűtípus, követőkód, süti): egy biztonsági képzésnél fontos, hogy az oldal maga is jó példát mutasson — semmilyen adatot nem küld el.</li>
+        <li><strong>Interaktivitás:</strong> a „csinálva tanulás” jobban rögzül, mint a puszta olvasás, ezért minden lecke gyakorlattal zárul.</li>
+        <li><strong>Kitalált „Példa Bank”:</strong> a példák valósághűek, de nem utánoznak valódi márkát, és nem vezetnek valódi oldalra.</li>
+      </ul>
+    </section>
+
+    <section id="t-nehez" aria-labelledby="t-nehez-h">
+      <h3 id="t-nehez-h"><span class="n">2</span>Mi volt nehéz?</h3>
+      <ul>
+        <li><strong>Pontosság és érthetőség egyensúlya:</strong> szakmailag helytálló, mégis egy idős, nem technikai olvasó számára is érthető, tömör szöveg. A szakszavakat (adathalászat, deepfake, kétlépcsős azonosítás) vagy elkerültük, vagy egy mondatban megmagyaráztuk.</li>
+        <li><strong>Óvatos jogi megfogalmazás:</strong> például a kártérítésnél („előfordulhat, hogy a bank nem téríti meg”), hogy az anyag ne ígérjen és ne állítson többet, mint ami általánosan igaz.</li>
+        <li><strong>„Mindent egy fájlba”:</strong> ikonok és illusztráció beágyazott SVG-ként, stílus és logika a fájlon belül — úgy, hogy a kód áttekinthető és karbantartható maradjon.</li>
+        <li><strong>Felolvasás:</strong> a böngészők magyar hangkészlete eltérő, és egyes böngészők a hosszú szöveget megszakítják. Megoldás: mondatokra bontott felolvasás, és figyelmeztetés, ha nincs magyar hang.</li>
+        <li><strong>Valósághű, mégis ártalmatlan példák:</strong> kitalált bank, fiktív telefonszámok, nem kattintható hamis linkek.</li>
+        <li><strong>A teszt felépítése:</strong> pontosan annyi kérdés, ahány téma (8), hihető rossz válaszokkal, magyarázattal és visszautalással a megfelelő leckére; a válaszok sorrendje kitöltésenként keveredik.</li>
+        <li><strong>Nyomtatás:</strong> a vészhelyzeti kártya önálló kinyomtatása a teljes oldal helyett.</li>
+        <li><strong>Telefonos nézet:</strong> az egymásba ágyazott dobozok (lecke → gyakorlat → válaszkártya) kis kijelzőn túl keskenyre szorították a szöveget. Ezt csak a képernyőképeken lehetett észrevenni, és a javítási körben oldottuk meg.</li>
+      </ul>
+    </section>
+
+    <section id="t-iter" aria-labelledby="t-iter-h">
+      <h3 id="t-iter-h"><span class="n">3</span>Hány iteráció volt?</h3>
+      <ol class="timeline">
+        <li><span class="tl-dot">1</span><strong>Modellválasztás</strong>A Claude Code-ban a <span class="mono">/model</span> paranccsal az Opus 5.5 modellt állítottuk be.</li>
+        <li><span class="tl-dot">2</span><strong>Teljes anyag egy promptból</strong>A modell egyetlen részletes promptból önállóan megtervezte a témákat, megírta a szöveget, a dizájnt, a gyakorlatokat, a tesztet és ezt a leírást, majd beírta a kijelölt fájlba.</li>
+        <li><span class="tl-dot">3</span><strong>Automatikus önellenőrzés</strong>A modell fej nélküli (headless) Chrome böngészőben megnyitotta az oldalt, automatikusan végigkattintotta mind a 8 gyakorlatot és a tesztet (JavaScript-hiba: 0), majd képernyőképeken átnézte az asztali és a mobil nézetet világos és sötét témában, valamint a nyomtatási nézetet.</li>
+        <li><span class="tl-dot">4</span><strong>1. javítási kör: képernyőképek alapján</strong>Telefonon kisebb belső margók, hogy a szöveg ne szoruljon keskeny oszlopba; a kiválasztott válaszgomb válasz után is jól látható maradjon; szélesebb telefonkeret a gyakorlatokban; élő hívásidő-számláló a hívásszimulátorban; tördelési finomítások.</li>
+        <li><span class="tl-dot">5</span><strong>2. javítási kör: szélsőséges kijelzőméretek</strong>Automatikus mérés 320, 390 és 768 képpont széles kijelzőn, normál és legnagyobb betűmérettel. A kilógó elemeket (tesztválaszok jelölése, hosszú szavak, rögzített oszlopszélességek) javítottuk, így vízszintes görgetés sehol nem keletkezik.</li>
+        <li><span class="tl-dot">6</span><strong>Emberi átnézés és további javítási körök</strong>nem volt további javítási kör</li>
+      </ol>
+      <p><strong>Összesítve (az MI oldaláról):</strong> 1 prompt → 1 teljes generálás → automatikus böngészős tesztelés → 2 javítási kör.</p>
+    </section>
+
+    <section id="t-prompt" aria-labelledby="t-prompt-h">
+      <h3 id="t-prompt-h"><span class="n">4</span>Milyen promptokat használtunk?</h3>
+      <p><strong>1. Modellválasztás</strong> (Claude Code parancs): <span class="mono">/model</span> → <span class="mono">Opus 5.5</span></p>
+      <p><strong>2. A fő prompt, szó szerint:</strong></p>
+      <div class="prompt-box">
+        <span class="label">Prompt</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="copy-prompt"><svg class="ico" aria-hidden="true"><use href="#i-copy"/></svg>Másolás</button>
+<pre id="prompt-text">Készíts interaktív tudatosító képzést biztonságos netbank használat témában az nke/mi-es-kibervedelm/index.html fájlba.
+Elvárások:
+- Kizárólag ebben az egy fájlban dolgozz.
+- A tartalom a netbank használat biztonsági vonatkozásairól, esetleg ehhez szorosan kapcsolódó területről szóljon.
+- A nyelvezete legyen pontos, tömör, de közérthető akár egy idős, technológiákhoz annyira nem értő ember számára is.
+- A html fájl összeállításakor használd ki a környezet adta lehetőségeket (html, css, js), de maradjon minden a html fájlban.
+- A képzési anyag végén legyen egy rövid feleletválasztós teszt is, amivel az olvasó visszaellenőrizheti a megszerzett tudását. Ez értékeljen is, a kérdések száma egyezzen az anyagban felvetett témák számával.
+- Egy rejtett tartalomként - ami gombnyomásra előhívható - legyen egy technológiai leírás, amiben elsősorban az alábbiakat részletezzük:
+  - Miért ezt választottuk?
+  - Mi volt nehéz? Hány iteráció volt?
+  - Milyen promptokat használtunk?
+  - Melyik AI szolgáltatást és modellt használtuk?
+  - Ezekből amit tudsz, töltsd ki előre!
+Kérem a tartalomra, kinézetre és működésre is tökéletes, igényes html fájlt!</pre>
+      </div>
+      <p><strong>3. További promptok:</strong> Nem volt további prompt.</p>
+      <p>A modell a fenti prompt alapján önállóan döntött a leckék témáiról és számáról, a gyakorlatok típusáról, a tesztkérdésekről és a megjelenésről.</p>
+    </section>
+
+    <section id="t-ai" aria-labelledby="t-ai-h">
+      <h3 id="t-ai-h"><span class="n">5</span>Melyik AI szolgáltatást és modellt használtuk?</h3>
+      <ul>
+        <li><strong>Szolgáltatás:</strong> Claude Code — az Anthropic ügynök alapú fejlesztőeszköze. A fejlesztő gépén, parancssorban fut: fájlokat olvas és ír, parancsokat futtat, és képes az elkészült munkát önállóan kipróbálni.</li>
+        <li><strong>Modell:</strong> Claude Opus 5.5 (azonosító: <span class="mono">claude-opus-5-5</span>), az Anthropic Claude 5 modellcsaládjának tagja.</li>
+        <li><strong>Szolgáltató:</strong> Anthropic.</li>
+        <li><strong>Munkamegosztás:</strong> az MI készítette a tartalmat, a szerkezetet, a dizájnt és a kódot; az ember fogalmazta meg a feladatot, és felel az eredmény átnézéséért, valamint a közzétételért.</li>
+      </ul>
+      <div class="tip tip-warn" style="margin-top:1rem">
+        <svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>
+        <p><strong>Korlátok:</strong> az anyagot MI írta, ezért közzététel előtt érdemes szakértővel (például banki biztonsági szakemberrel) is átnézetni. A tanácsok általánosan elfogadott ajánlásokat követnek; a konkrét banki eljárásokról mindig az adott bank tájékoztatása az irányadó.</p>
+      </div>
+    </section>
+
+    <section id="t-tech" aria-labelledby="t-tech-h">
+      <h3 id="t-tech-h"><span class="n">6</span>Megvalósítás röviden</h3>
+      <ul class="stack" aria-label="Felhasznált technológiák">
+        <li>HTML5</li><li>CSS3</li><li>Natív JavaScript</li><li>Inline SVG</li><li>&lt;dialog&gt;</li><li>Web Speech API</li><li>localStorage</li><li>Nyomtatási CSS</li>
+      </ul>
+      <ul>
+        <li><strong>HTML5:</strong> szemantikus szerkezet (header, main, article, fieldset), natív <span class="mono">&lt;dialog&gt;</span> elem ehhez a rejtett leíráshoz.</li>
+        <li><strong>CSS3:</strong> CSS-változók a színekhez és az állítható betűmérethez; világos és sötét téma (rendszerbeállítás szerint vagy kézzel); reszponzív rácsok telefonra és asztali gépre; nyomtatási stílus; a mozgáscsökkentési beállítás tiszteletben tartása.</li>
+        <li><strong>JavaScript (keretrendszer nélkül):</strong> 8 gyakorlat — webcím-felismerő, SMS-elemző, hívásszimulátor, jelszóerősség-mérő, kódolvasó, MI-csalás felismerő, eszköz-ellenőrzőlista, vészhelyzetikártya-készítő —, valamint a kevert sorrendű, kiértékelő teszt.</li>
+        <li><strong>Web Speech API:</strong> a leckék felolvasása magyar hanggal, ha a böngésző ismeri.</li>
+        <li><strong>localStorage:</strong> a haladás, a betűméret és a téma megjegyzése — kizárólag az olvasó saját böngészőjében.</li>
+        <li><strong>Akadálymentesség:</strong> billentyűzettel teljesen kezelhető, látható fókusz, képernyőolvasónak szóló élő visszajelzések, legalább 44–48 képpontos kattintási felületek, nagy kontraszt.</li>
+      </ul>
+    </section>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- Segédfüggvények ---------- */
+  var doc = document, root = doc.documentElement;
+  var $ = function (s, r) { return (r || doc).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || doc).querySelectorAll(s)); };
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var smooth = function () { return reduceMotion ? 'auto' : 'smooth'; };
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem('nb-' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem('nb-' + k, JSON.stringify(v)); } catch (e) { /* nem baj */ } },
+    del: function (k) { try { localStorage.removeItem('nb-' + k); } catch (e) { /* nem baj */ } }
+  };
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function icon(id) { return '<svg class="ico" aria-hidden="true"><use href="#' + id + '"/></svg>'; }
+
+  /* A fájl hozzávetőleges mérete a technológiai leíráshoz (még a dinamikus tartalom előtt) */
+  try {
+    var kb = Math.round(new Blob([root.outerHTML]).size / 1024);
+    $('#tech-size').textContent = 'kb. ' + kb + ' KB';
+  } catch (e) { /* nem baj */ }
+
+  /* ---------- Értesítő (toast) ---------- */
+  var toastEl = $('#toast'), toastTimer;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 4200);
+  }
+
+  /* ---------- Téma ---------- */
+  var themeBtn = $('#theme-btn'), metaTheme = $('meta[name="theme-color"]');
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  function effectiveTheme() { return root.getAttribute('data-theme') || (mq.matches ? 'dark' : 'light'); }
+  function syncTheme() {
+    var dark = effectiveTheme() === 'dark';
+    var label = dark ? 'Világos mód bekapcsolása' : 'Sötét mód bekapcsolása';
+    themeBtn.setAttribute('aria-label', label);
+    themeBtn.title = label;
+    themeBtn.querySelector('use').setAttribute('href', dark ? '#i-sun' : '#i-moon');
+    metaTheme.setAttribute('content', dark ? '#081536' : '#0d2461');
+  }
+  themeBtn.addEventListener('click', function () {
+    var next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    store.set('theme', next);
+    syncTheme();
+  });
+  if (mq.addEventListener) mq.addEventListener('change', syncTheme);
+  syncTheme();
+
+  /* ---------- Betűméret ---------- */
+  var SCALES = [0.9, 1, 1.12, 1.25, 1.4, 1.6];
+  var si = store.get('scale-i', 1);
+  if (!(typeof si === 'number' && si >= 0 && si < SCALES.length)) si = 1;
+  var fDec = $('#font-dec'), fInc = $('#font-inc');
+  function applyScale(announce) {
+    root.style.setProperty('--scale', SCALES[si]);
+    fDec.disabled = si === 0;
+    fInc.disabled = si === SCALES.length - 1;
+    store.set('scale-i', si);
+    if (announce) toast('Betűméret: ' + Math.round(SCALES[si] * 100) + '%');
+  }
+  fDec.addEventListener('click', function () { if (si > 0) { si--; applyScale(true); } });
+  fInc.addEventListener('click', function () { if (si < SCALES.length - 1) { si++; applyScale(true); } });
+  applyScale(false);
+
+  /* ---------- Haladás ---------- */
+  var TOTAL = 8;
+  var done = {};
+  (store.get('done', []) || []).forEach(function (n) { if (n >= 1 && n <= TOTAL) done[n] = true; });
+  function doneCount() { return Object.keys(done).length; }
+  function renderProgress() {
+    var n = doneCount();
+    $('#progress-bar').style.width = (n / TOTAL * 100) + '%';
+    $('#progress-text').textContent = n + '/' + TOTAL + ' lecke';
+    $('#progress').setAttribute('aria-valuenow', n);
+    $$('[data-toc]').forEach(function (a) {
+      var k = +a.getAttribute('data-toc');
+      a.classList.toggle('is-done', !!done[k]);
+      a.querySelector('.toc-status').textContent = done[k] ? '✓ Elvégezve' : 'Még hátravan';
+    });
+    $$('.lesson[data-lesson]').forEach(function (sec) {
+      var k = +sec.getAttribute('data-lesson');
+      var isDone = !!done[k];
+      sec.classList.toggle('is-done', isDone);
+      sec.querySelector('.complete-btn span').textContent = isDone
+        ? (k < TOTAL ? 'Elvégezve — tovább a következő leckére' : 'Elvégezve — tovább az összefoglalóhoz')
+        : 'Megértettem, tovább';
+    });
+  }
+  function goTo(el) {
+    el.scrollIntoView({ behavior: smooth(), block: 'start' });
+    var h = el.querySelector('h2');
+    if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+  }
+  $$('.complete-btn').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var sec = b.closest('.lesson');
+      var k = +sec.getAttribute('data-lesson');
+      var was = !!done[k];
+      done[k] = true;
+      store.set('done', Object.keys(done).map(Number));
+      renderProgress();
+      if (!was) {
+        toast(doneCount() === TOTAL ? 'Gratulálunk! Mind a 8 leckét elvégezte. Jöhet a teszt!' : 'Szép munka! ' + doneCount() + '/8 lecke kész.');
+      }
+      goTo(k < TOTAL ? $('#lecke-' + (k + 1)) : $('#osszefoglalo'));
+    });
+  });
+  renderProgress();
+
+  /* ---------- Felolvasás (Web Speech API) ---------- */
+  var tts = { ok: 'speechSynthesis' in window && typeof window.SpeechSynthesisUtterance === 'function', voice: null, btn: null, token: 0, warned: false };
+  if (!tts.ok) {
+    $$('.tts-btn').forEach(function (b) { b.hidden = true; });
+  } else {
+    var pickVoice = function () {
+      var vs = window.speechSynthesis.getVoices() || [];
+      tts.voice = vs.filter(function (v) { return /^hu/i.test(v.lang); })[0] || null;
+      tts.voicesLoaded = vs.length > 0;
+    };
+    pickVoice();
+    if ('onvoiceschanged' in window.speechSynthesis) window.speechSynthesis.onvoiceschanged = pickVoice;
+
+    var setBtn = function (btn, on) {
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      btn.querySelector('use').setAttribute('href', on ? '#i-stop' : '#i-speaker');
+      btn.querySelector('span').textContent = on ? 'Leállítás' : 'Felolvasás';
+    };
+    var stopTts = function () {
+      tts.token++;
+      window.speechSynthesis.cancel();
+      if (tts.btn) setBtn(tts.btn, false);
+      tts.btn = null;
+    };
+    var chunksFor = function (section) {
+      var nodes = $$('h2, .keybox p:not(.keybox-label), .lesson-body p, .lesson-body li, .lesson-body h3', section)
+        .filter(function (el) { return !el.closest('.no-tts, .exercise'); });
+      var text = nodes.map(function (el) {
+        var t = el.textContent.replace(/\s+/g, ' ').trim();
+        if (t && !/[.!?…:;]$/.test(t)) t += '.';
+        return t;
+      }).join(' ');
+      var sentences = text.match(/[^.!?…]+[.!?…]+["”»)]*\s*/g) || [text];
+      var chunks = [], cur = '';
+      sentences.forEach(function (s) {
+        if ((cur + s).length > 220 && cur) { chunks.push(cur.trim()); cur = ''; }
+        cur += s;
+      });
+      if (cur.trim()) chunks.push(cur.trim());
+      return chunks;
+    };
+    var speak = function (section, btn) {
+      if (tts.btn === btn) { stopTts(); return; }
+      stopTts();
+      var my = tts.token;
+      var chunks = chunksFor(section);
+      tts.btn = btn;
+      setBtn(btn, true);
+      if (!tts.voice && tts.voicesLoaded && !tts.warned) {
+        tts.warned = true;
+        toast('A böngészőjében nincs magyar felolvasó hang, ezért a kiejtés pontatlan lehet.');
+      }
+      setTimeout(function () {
+        if (my !== tts.token) return;
+        chunks.forEach(function (c, i) {
+          var u = new SpeechSynthesisUtterance(c);
+          u.lang = 'hu-HU';
+          if (tts.voice) u.voice = tts.voice;
+          u.rate = 0.95;
+          if (i === chunks.length - 1) {
+            u.onend = function () { if (my === tts.token) { setBtn(btn, false); tts.btn = null; } };
+          }
+          u.onerror = function () { if (my === tts.token) { setBtn(btn, false); tts.btn = null; } };
+          window.speechSynthesis.speak(u);
+        });
+      }, 80);
+    };
+    $$('.tts-btn').forEach(function (b) {
+      b.addEventListener('click', function () { speak(b.closest('.lesson, .lesson-like'), b); });
+    });
+    window.addEventListener('pagehide', function () { window.speechSynthesis.cancel(); });
+  }
+
+  /* ---------- 1. gyakorlat: webcím-felismerő ---------- */
+  var URLS = [
+    { parts: [['https://www.'], ['peldabank.hu', 'owner'], ['/netbank']], real: true,
+      why: 'Az első „/” előtt a peldabank.hu áll — ez a bank valódi címe.' },
+    { parts: [['https://peldabank.hu.'], ['biztonsagos-belepes.com', 'owner'], ['/login']], real: false,
+      why: 'Becsapós! A peldabank.hu csak a cím elején szerepel. Az első „/” előtt a biztonsagos-belepes.com áll: ez a valódi gazda, és nem a bank.' },
+    { parts: [['https://www.'], ['pe', 'owner'], ['1', 'owner odd'], ['dabank.hu', 'owner'], ['/belepes']], real: false,
+      why: 'Az „l” betű helyett „1” (egyes szám) áll: pe1dabank. Egyetlen eltérő karakter is hamis oldalt jelent!' },
+    { parts: [['https://netbank.'], ['peldabank.hu', 'owner'], ['/belepes']], real: true,
+      why: 'A „netbank.” előtag a bank saját aloldala. Az első „/” előtt a peldabank.hu áll — ez rendben van.' },
+    { parts: [['https://'], ['peldabank-ugyfelszolgalat.info', 'owner'], ['/adategyeztetes']], real: false,
+      why: 'A bank neve után kötőjel és egy másik szó áll, a végződés pedig .info. Ez nem a bank címe.' }
+  ];
+  (function urlGame() {
+    var list = $('#url-list'), scoreEl = $('#url-score');
+    var answered = 0, correct = 0;
+    function update() {
+      scoreEl.textContent = answered < URLS.length
+        ? 'Megválaszolva: ' + answered + ' / ' + URLS.length
+        : 'Eredmény: ' + correct + ' / ' + URLS.length + ' helyes' + (correct === URLS.length ? ' — kiváló szem!' : '');
+    }
+    function render() {
+      answered = 0; correct = 0;
+      list.innerHTML = URLS.map(function (u, i) {
+        var txt = u.parts.map(function (p) { return p[1] ? '<span class="' + p[1] + '">' + esc(p[0]) + '</span>' : esc(p[0]); }).join('');
+        return '<li class="url-item" data-i="' + i + '">' +
+          '<div class="addr">' + icon('i-lock') + '<span class="addr-text">' + txt + '</span></div>' +
+          '<div class="url-actions">' +
+            '<button type="button" class="btn btn-secondary btn-sm" data-a="real">' + icon('i-check') + 'Valódi</button>' +
+            '<button type="button" class="btn btn-secondary btn-sm" data-a="fake">' + icon('i-x') + 'Hamis</button>' +
+          '</div>' +
+          '<p class="feedback" role="status" hidden></p>' +
+        '</li>';
+      }).join('');
+      update();
+    }
+    list.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-a]');
+      if (!b) return;
+      var li = b.closest('.url-item');
+      if (li.classList.contains('revealed')) return;
+      var u = URLS[+li.getAttribute('data-i')];
+      var saysReal = b.getAttribute('data-a') === 'real';
+      var right = saysReal === u.real;
+      answered++; if (right) correct++;
+      li.classList.add('revealed', right ? 'is-correct' : 'is-wrong');
+      $$('button', li).forEach(function (x) { x.disabled = true; });
+      b.classList.add('chosen');
+      var fb = $('.feedback', li);
+      fb.className = 'feedback ' + (right ? 'ok' : 'bad');
+      fb.innerHTML = '<strong>' + (right ? 'Helyes! ' : 'Nem egészen. ') + (u.real ? 'Ez a cím valódi.' : 'Ez a cím hamis.') + '</strong> ' + esc(u.why);
+      fb.hidden = false;
+      update();
+    });
+    $('#url-reset').addEventListener('click', render);
+    render();
+  })();
+
+  /* ---------- 2. gyakorlat: árulkodó jelek az SMS-ben ---------- */
+  (function smsFlags() {
+    var flags = $$('#ex-sms .flag');
+    var found = {};
+    var countEl = $('#flag-count');
+    function reveal(f, silent) {
+      var id = f.getAttribute('data-flag');
+      if (found[id]) return;
+      found[id] = true;
+      f.classList.add('found');
+      f.setAttribute('aria-disabled', 'true');
+      $('#flag-list li[data-flag="' + id + '"]').hidden = false;
+      var n = Object.keys(found).length;
+      countEl.textContent = n;
+      if (n === flags.length) $('#flag-done').hidden = !!silent;
+    }
+    flags.forEach(function (f) {
+      f.addEventListener('click', function () { reveal(f); });
+      f.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal(f); }
+      });
+    });
+    $('#flag-all').addEventListener('click', function () { flags.forEach(function (f) { reveal(f, true); }); });
+    $('#flag-reset').addEventListener('click', function () {
+      found = {};
+      flags.forEach(function (f) { f.classList.remove('found'); f.removeAttribute('aria-disabled'); });
+      $$('#flag-list li').forEach(function (li) { li.hidden = true; });
+      $('#flag-done').hidden = true;
+      countEl.textContent = '0';
+    });
+  })();
+
+  /* ---------- 3. gyakorlat: hívásszimulátor ---------- */
+  var CALL = {
+    start: { say: 'Jó napot kívánok! Kovács Péter vagyok, a Példa Bank biztonsági osztályáról. Gyanús átutalást észleltünk a számláján. A pénze veszélyben van, azonnal intézkednünk kell!',
+      choices: [
+        { t: 'Jaj, ne! Mit kell tennem?', next: 'scared' },
+        { t: 'Honnan tudjam, hogy Ön valóban a bankból hív?', next: 'doubt' },
+        { t: 'Leteszem, és felhívom a bankot a kártyám hátoldalán lévő számon.', next: 'good1' }
+      ] },
+    scared: { say: 'Ne aggódjon, segítek. Telepítse a telefonjára az AnyDesk nevű alkalmazást, és olvassa fel a megjelenő számot. Így át tudom tenni a pénzét egy védett számlára.',
+      choices: [
+        { t: 'Rendben, már telepítem is.', next: 'bad1' },
+        { t: 'A bank ilyet soha nem kér. Leteszem, és visszahívom a bankot.', next: 'good2' }
+      ] },
+    doubt: { say: 'Nézze meg a kijelzőt: a bank hivatalos száma látszik. De siessen, kérem, mert percek múlva eltűnik a pénze! Mondja meg gyorsan a kártyaszámát és az SMS-ben kapott kódot.',
+      choices: [
+        { t: 'Valóban a bank száma látszik… Rendben, mondom.', next: 'bad2' },
+        { t: 'A telefonszám hamisítható. Leteszem, és én hívom a bankot.', next: 'good3' }
+      ] },
+    bad1: { end: 'bad', title: 'Ezt a kört a csaló nyerte.', text: 'Az AnyDesk és a hasonló alkalmazások távoli hozzáférést adnak: a csaló látja a képernyőjét, és belép a netbankjába. A bank soha nem kér ilyet, és soha nem utal „védett számlára”.' },
+    bad2: { end: 'bad', title: 'Ezt a kört a csaló nyerte.', text: 'A kijelzőn megjelenő szám hamisítható, a bank pedig soha nem kéri telefonon a kártyaszámot vagy a kódot. A sürgetés a csaló legfőbb eszköze.' },
+    good1: { end: 'good', title: 'Kiváló döntés!', text: 'Megszakította a hívást, és saját maga kereste meg a bankot egy biztosan valódi számon. Ez a legbiztosabb módszer.' },
+    good2: { end: 'good', title: 'Helyes!', text: 'Felismerte a csapdát: a bank soha nem kér alkalmazástelepítést, és nem utaltat „védett számlára”.' },
+    good3: { end: 'good', title: 'Helyes!', text: 'A kijelzőn megjelenő szám hamisítható. Ha Ön hívja vissza a bankot a kártyáján lévő számon, biztosan a valódi bankkal beszél.' }
+  };
+  (function callSim() {
+    var chat = $('#call-chat'), choicesEl = $('#call-choices'), endEl = $('#call-end'), status = $('#call-status');
+    var timer, clock, secs = 0;
+    function startClock() {
+      clearInterval(clock);
+      secs = 0;
+      status.textContent = '00:00';
+      clock = setInterval(function () {
+        secs++;
+        status.textContent = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
+      }, 1000);
+    }
+    function addMsg(who, text) {
+      var d = doc.createElement('div');
+      d.className = 'msg ' + who;
+      d.innerHTML = '<span class="who-label">' + (who === 'them' ? 'Hívó' : 'Ön') + '</span>' + esc(text);
+      chat.appendChild(d);
+    }
+    function showNode(key) {
+      var node = CALL[key];
+      choicesEl.innerHTML = '';
+      if (node.end) {
+        clearInterval(clock);
+        status.textContent = 'Hívás vége';
+        endEl.innerHTML = '<div class="call-end ' + node.end + '"><h4>' + icon(node.end === 'good' ? 'i-check' : 'i-warn') + esc(node.title) + '</h4><p>' + esc(node.text) + '</p>' +
+          '<button type="button" class="btn btn-secondary btn-sm" id="call-restart">' + icon('i-refresh') + 'Újra kipróbálom</button></div>';
+        $('#call-restart').addEventListener('click', start);
+        return;
+      }
+      var typing = doc.createElement('div');
+      typing.className = 'typing';
+      typing.setAttribute('aria-label', 'A hívó beszél…');
+      typing.innerHTML = '<i></i><i></i><i></i>';
+      chat.appendChild(typing);
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        typing.remove();
+        addMsg('them', node.say);
+        node.choices.forEach(function (c) {
+          var b = doc.createElement('button');
+          b.type = 'button';
+          b.className = 'btn btn-secondary';
+          b.textContent = c.t;
+          b.addEventListener('click', function () {
+            addMsg('me', c.t);
+            choicesEl.innerHTML = '';
+            showNode(c.next);
+          });
+          choicesEl.appendChild(b);
+        });
+      }, reduceMotion ? 0 : 900);
+    }
+    function start() {
+      clearTimeout(timer);
+      chat.innerHTML = '';
+      endEl.innerHTML = '';
+      startClock();
+      showNode('start');
+    }
+    start();
+  })();
+
+  /* ---------- 4. gyakorlat: jelszóerősség ---------- */
+  (function pwMeter() {
+    var input = $('#pw-input'), meter = $('#pw-meter'), verdict = $('#pw-verdict'), note = $('#pw-note');
+    var COMMON = /(0123|1234|2345|3456|4567|5678|6789|9876|8765|7654|6543|5432|4321|qwer|wert|asdf|yxcv|jelsz|passw|admin|titok|szeretlek|abcd)/i;
+    var YEAR = /(19[2-9]\d|20[0-4]\d)/;
+    var LABELS = ['Nagyon gyenge', 'Gyenge', 'Közepes', 'Erős', 'Nagyon erős'];
+    var NOTES = [
+      'Ezt a jelszót egy csaló pillanatok alatt kitalálná.',
+      'Könnyen kitalálható. Legyen hosszabb, és kerülje az ismert mintákat.',
+      'Elfogadható, de lehetne erősebb: legyen még hosszabb.',
+      'Jó jelszó! Csak a netbankhoz használja.',
+      'Kiváló! Hosszú és nehezen kitalálható.'
+    ];
+    function analyse(pw) {
+      var len = Array.from(pw).length;
+      var lower = /\p{Ll}/u.test(pw), upper = /\p{Lu}/u.test(pw), digit = /\d/.test(pw), sym = /[^\p{L}\p{N}]/u.test(pw);
+      var classes = [lower, upper, digit, sym].filter(Boolean).length;
+      var weak = COMMON.test(pw) || YEAR.test(pw) || /(.)\1\1/.test(pw);
+      var s = 0;
+      if (len >= 8) s++;
+      if (len >= 12) s++;
+      if (len >= 16) s++;
+      if (classes >= 3 && len >= 8) s++;
+      if (weak) s = Math.max(0, s - 2);
+      if (len < 8 || /^(.)\1*$/.test(pw)) s = 0;
+      return { s: Math.min(4, s), len: len, mixCase: lower && upper, mix: digit || sym, weak: weak };
+    }
+    function setCheck(key, ok) {
+      var li = $('#pw-checks li[data-c="' + key + '"]');
+      li.className = ok ? 'yes' : 'no';
+      li.querySelector('.mark').textContent = ok ? '✓' : '✕';
+    }
+    function update() {
+      var pw = input.value;
+      if (!pw) {
+        meter.removeAttribute('data-level');
+        verdict.className = 'pw-verdict';
+        verdict.textContent = 'Írjon be egy jelszót!';
+        note.textContent = '';
+        $$('#pw-checks li').forEach(function (li) { li.className = ''; li.querySelector('.mark').textContent = '•'; });
+        $('.pw-len').textContent = '';
+        return;
+      }
+      var r = analyse(pw);
+      meter.setAttribute('data-level', r.s);
+      verdict.className = 'pw-verdict l' + r.s;
+      verdict.textContent = 'Erősség: ' + LABELS[r.s];
+      note.textContent = NOTES[r.s];
+      $('.pw-len').textContent = '(most: ' + r.len + ')';
+      setCheck('len', r.len >= 12);
+      setCheck('case', r.mixCase);
+      setCheck('mix', r.mix);
+      setCheck('weak', !r.weak);
+    }
+    input.addEventListener('input', update);
+    $$('[data-pw]').forEach(function (b) {
+      b.addEventListener('click', function () { input.value = b.getAttribute('data-pw'); update(); });
+    });
+    var toggle = $('#pw-toggle');
+    toggle.addEventListener('click', function () {
+      var show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      var label = show ? 'Jelszó elrejtése' : 'Jelszó megjelenítése';
+      toggle.setAttribute('aria-label', label);
+      toggle.title = label;
+      toggle.querySelector('use').setAttribute('href', show ? '#i-eye-off' : '#i-eye');
+    });
+    update();
+  })();
+
+  /* ---------- 5. gyakorlat: kódolvasó ---------- */
+  var CODE_ROUNDS = [
+    { situation: 'Ön éppen a netbankban fizeti be a 8 450 Ft-os villanyszámláját. Ezt az SMS-t kapja:',
+      sms: 'Példa Bank: Bankkártyája hozzáadása egy új eszköz mobiltárcájához. Kód: 739214. Ezt a kódot SOHA ne adja meg senkinek!',
+      give: false,
+      ok: 'Helyes! Az SMS nem a villanyszámláról szól, hanem arról, hogy a kártyáját egy idegen telefonhoz adnák hozzá. Ha megadná a kódot, a csaló azzal a telefonnal fizethetne az Ön pénzéből.',
+      ko: 'Vigyázat! Olvassa el újra: az SMS nem a villanyszámláról szól, hanem arról, hogy a kártyáját egy új eszközhöz adnák hozzá. Ezt nem Ön indította, a kódot tehát nem szabad megadni.' },
+    { situation: 'Ugyanezt a 8 450 Ft-os villanyszámlát fizeti. Most ez az SMS érkezik:',
+      sms: 'Példa Bank: 8 450 Ft átutalás jóváhagyása. Kedvezményezett: Áramszolgáltató Zrt. Kód: 518302. Ha nem Ön kezdeményezte, ne adja meg!',
+      give: true,
+      ok: 'Helyes! Az összeg és a kedvezményezett is egyezik azzal, amit Ön éppen csinál, és a kódot a saját netbankjába írja be. Így ez rendben van.',
+      ko: 'Ebben az esetben nyugodtan beírhatja: Ön indította az utalást, és az összeg, valamint a kedvezményezett is egyezik. A kódot a saját netbankjába írja be — senkinek nem mondja el.' },
+    { situation: 'Telefonon hívja „a bank”: azt mondják, a biztonsága érdekében küldenek egy kódot, olvassa fel nekik.',
+      sms: 'Példa Bank: 250 000 Ft átutalás jóváhagyása. Kedvezményezett: K. Dávid. Kód: 604117. Ha nem Ön kezdeményezte, ne adja meg!',
+      give: false,
+      ok: 'Helyes! A kódot senkinek nem mondjuk el. Ráadásul az SMS-ből kiderül: 250 000 Ft-ot utalnának egy idegennek. Tegye le, és hívja a bankot.',
+      ko: 'Vigyázat! A kódot soha nem mondjuk el senkinek — a bank nem kéri. Az SMS-ből ráadásul kiderül: 250 000 Ft-ot utalnának egy idegennek.' }
+  ];
+  (function codeCheck() {
+    var stage = $('#code-stage');
+    var idx = 0, results = [];
+    function dots() {
+      return '<div class="step-dots" aria-hidden="true">' + CODE_ROUNDS.map(function (_, i) {
+        var c = results[i] === true ? 'ok' : results[i] === false ? 'bad' : i === idx ? 'on' : '';
+        return '<span class="' + c + '"></span>';
+      }).join('') + '</div>';
+    }
+    function render() {
+      if (idx >= CODE_ROUNDS.length) {
+        var good = results.filter(Boolean).length;
+        stage.innerHTML = dots() +
+          '<p class="feedback ' + (good === CODE_ROUNDS.length ? 'ok' : 'warn') + '"><strong>Eredmény: ' + good + ' / ' + CODE_ROUNDS.length + ' helyes döntés.</strong> ' +
+          (good === CODE_ROUNDS.length ? 'Kiváló! Ön mindig elolvassa, mit hagy jóvá.' : 'Ne feledje: mindig olvassa végig az SMS-t, és csak akkor írja be a kódot, ha minden egyezik azzal, amit Ön csinál.') + '</p>' +
+          '<div><button type="button" class="btn btn-secondary btn-sm" id="code-restart">' + icon('i-refresh') + 'Újrakezdés</button></div>';
+        $('#code-restart').addEventListener('click', function () { idx = 0; results = []; render(); });
+        return;
+      }
+      var r = CODE_ROUNDS[idx];
+      stage.innerHTML = dots() +
+        '<p class="situation"><span class="sr-only">' + (idx + 1) + '. helyzet: </span>' + esc(r.situation) + '</p>' +
+        '<div class="sms-card"><div class="sms-from">' + icon('i-msg') + 'SMS · Példa Bank</div><p>' + esc(r.sms) + '</p></div>' +
+        '<div class="btn-row" id="code-btns">' +
+          '<button type="button" class="btn btn-secondary" data-give="1">' + icon('i-check') + 'Megadom a kódot</button>' +
+          '<button type="button" class="btn btn-secondary" data-give="0">' + icon('i-x') + 'Nem adom meg</button>' +
+        '</div><div id="code-fb"></div>';
+      $$('#code-btns button', stage).forEach(function (b) {
+        b.addEventListener('click', function () {
+          var give = b.getAttribute('data-give') === '1';
+          var right = give === r.give;
+          results[idx] = right;
+          $$('#code-btns button', stage).forEach(function (x) { x.disabled = true; });
+          b.classList.add('chosen');
+          $('#code-fb').innerHTML = '<p class="feedback ' + (right ? 'ok' : 'bad') + '">' + esc(right ? r.ok : r.ko) + '</p>' +
+            '<div style="margin-top:.8rem"><button type="button" class="btn btn-primary btn-sm" id="code-next">' +
+            (idx < CODE_ROUNDS.length - 1 ? 'Következő helyzet' : 'Eredmény') + icon('i-arrow') + '</button></div>';
+          $('.step-dots', stage).outerHTML = dots();
+          var next = $('#code-next');
+          next.addEventListener('click', function () { idx++; render(); });
+          next.focus({ preventScroll: true });
+        });
+      });
+    }
+    render();
+  })();
+
+  /* ---------- 6. gyakorlat: MI-alapú csalások ---------- */
+  var SCENARIOS = [
+    { type: 'WhatsApp-üzenet, ismeretlen számról', ic: 'i-msg', sus: true,
+      text: '„Szia Mama! Elromlott a telefonom, ez az új számom. Sürgősen be kellene fizetnem 180 000 Ft-ot, holnap visszaadom. Apának ne szólj, majd elmondom!”',
+      why: 'Új, ismeretlen szám, sürgős pénzkérés és titkolózás — ez a klasszikus „új számom van” csalás. Hívja fel a gyermekét a régi, jól ismert számán.' },
+    { type: 'Telefonhívás', ic: 'i-phone', sus: true,
+      text: 'Az unokája hangja, sírva: „Mama, balesetet okoztam, a rendőrségen vagyok! Átadom az ügyvédnek, ő elmondja, mennyi pénz kell, hogy ne kerüljek börtönbe.”',
+      why: 'Ez az „unokázós” csalás, ma már MI-vel lemásolt hanggal is. Tegye le, és hívja az unokáját vagy a szüleit az ismert számukon. A rendőrség soha nem kér pénzt telefonon.' },
+    { type: 'Videóreklám egy közösségi oldalon', ic: 'i-video', sus: true,
+      text: 'Egy ismert tévés műsorvezető: „Ezzel az új, mesterséges intelligenciás befektetési programmal napi 30 000 forintot keresek, kockázat nélkül. Regisztráljon még ma!”',
+      why: 'Szinte biztosan MI-vel készült hamis videó. Kockázat nélküli, magas hozam nem létezik, a „még ma” pedig sürgetés.' },
+    { type: 'Telefonhívás, ismert számról', ic: 'i-phone', sus: false,
+      text: 'A lánya hívja a régi, jól ismert számáról. Ön megkérdezi a családi jelszót — tudja. Csak azt kéri, hogy szombaton vigyázzon az unokára.',
+      why: 'Ismert szám, a családi jelszót is tudja, és nem kér sem pénzt, sem adatot. Nem kell mindenkiben csalót látni — pénz- vagy adatkérésnél legyen óvatos.' }
+  ];
+  (function aiScenarios() {
+    var grid = $('#scen-grid'), scoreEl = $('#scen-score');
+    var answered = 0, correct = 0;
+    function update() {
+      scoreEl.textContent = answered < SCENARIOS.length
+        ? 'Megválaszolva: ' + answered + ' / ' + SCENARIOS.length
+        : 'Eredmény: ' + correct + ' / ' + SCENARIOS.length + ' helyes';
+    }
+    function render() {
+      answered = 0; correct = 0;
+      grid.innerHTML = SCENARIOS.map(function (s, i) {
+        return '<div class="scen" data-i="' + i + '">' +
+          '<p class="scen-type">' + icon(s.ic) + esc(s.type) + '</p>' +
+          '<p class="scen-text">' + esc(s.text) + '</p>' +
+          '<div class="btn-row">' +
+            '<button type="button" class="btn btn-secondary btn-sm" data-sus="1">' + icon('i-warn') + 'Gyanús</button>' +
+            '<button type="button" class="btn btn-secondary btn-sm" data-sus="0">' + icon('i-check') + 'Rendben van</button>' +
+          '</div><p class="feedback" role="status" hidden></p></div>';
+      }).join('');
+      update();
+    }
+    grid.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-sus]');
+      if (!b) return;
+      var card = b.closest('.scen');
+      if (card.classList.contains('is-correct') || card.classList.contains('is-wrong')) return;
+      var s = SCENARIOS[+card.getAttribute('data-i')];
+      var right = (b.getAttribute('data-sus') === '1') === s.sus;
+      answered++; if (right) correct++;
+      card.classList.add(right ? 'is-correct' : 'is-wrong');
+      $$('button', card).forEach(function (x) { x.disabled = true; });
+      b.classList.add('chosen');
+      var fb = $('.feedback', card);
+      fb.className = 'feedback ' + (right ? 'ok' : 'bad');
+      fb.innerHTML = '<strong>' + (right ? 'Helyes! ' : 'Nem egészen. ') + (s.sus ? 'Ez gyanús.' : 'Ez rendben van.') + '</strong> ' + esc(s.why);
+      fb.hidden = false;
+      update();
+    });
+    $('#scen-reset').addEventListener('click', render);
+    render();
+  })();
+
+  /* ---------- 7. gyakorlat: eszköz-ellenőrzőlista ---------- */
+  (function checklist() {
+    var boxes = $$('#checklist input');
+    var saved = store.get('checks', []) || [];
+    boxes.forEach(function (b) { b.checked = saved.indexOf(+b.value) !== -1; });
+    function update() {
+      var on = boxes.filter(function (b) { return b.checked; });
+      boxes.forEach(function (b) { b.closest('.check').classList.toggle('on', b.checked); });
+      var n = on.length, t = boxes.length;
+      $('#check-bar').style.width = (n / t * 100) + '%';
+      var fb = $('#check-fb');
+      var msg, cls;
+      if (n === t) { msg = 'Kiváló! Mind a ' + t + ' pont teljesül — az eszköze jól védett.'; cls = 'ok'; }
+      else if (n >= 4) { msg = n + ' / ' + t + ' pont teljesül. Jó úton jár, már csak néhány lépés hiányzik!'; cls = 'ok'; }
+      else if (n >= 1) { msg = n + ' / ' + t + ' pont teljesül. Van még teendő — a bejelöletlen pontokat érdemes mielőbb rendbe tenni.'; cls = 'warn'; }
+      else { msg = '0 / ' + t + ' pont teljesül. Kezdje el a bejelölést!'; cls = 'warn'; }
+      fb.className = 'feedback ' + cls;
+      fb.textContent = msg;
+      store.set('checks', on.map(function (b) { return +b.value; }));
+    }
+    boxes.forEach(function (b) { b.addEventListener('change', update); });
+    update();
+  })();
+
+  /* ---------- 8. gyakorlat: vészhelyzeti kártya ---------- */
+  (function emergencyCard() {
+    function bind(inputId, outId, ph) {
+      var inp = $(inputId), out = $(outId);
+      function upd() {
+        var v = inp.value.trim();
+        out.innerHTML = v ? esc(v) : '<span class="placeholder">' + ph + '</span>';
+      }
+      inp.addEventListener('input', upd);
+      upd();
+    }
+    bind('#ec-bank', '#ec-bank-out', '(bankja neve)');
+    bind('#ec-phone', '#ec-phone-out', '(hivatalos telefonszám)');
+    var helper = $('#ec-helper');
+    helper.addEventListener('input', function () {
+      var v = helper.value.trim();
+      $('#ec-helper-row').hidden = !v;
+      $('#ec-helper-out').textContent = v;
+    });
+    var printRoot = $('#print-root');
+    $('#ec-print').addEventListener('click', function () {
+      printRoot.innerHTML = '';
+      var clone = $('#ecard').cloneNode(true);
+      clone.removeAttribute('id');
+      $$('[id]', clone).forEach(function (el) { el.removeAttribute('id'); });
+      printRoot.appendChild(clone);
+      doc.body.classList.add('print-card-only');
+      window.print();
+    });
+    window.addEventListener('afterprint', function () {
+      doc.body.classList.remove('print-card-only');
+      printRoot.innerHTML = '';
+    });
+  })();
+
+  /* ---------- Záróteszt ---------- */
+  var QUIZ = [
+    { l: 1, q: 'Hogyan lépjen be a legbiztonságosabban a netbankjába?',
+      a: ['A bank hivatalos alkalmazásával, vagy a saját maga által beírt, könyvjelzőbe mentett címen.',
+          'Az e-mailben kapott „Belépés a netbankba” gombra kattintva.',
+          'A kereső legelső találatára kattintva, akkor is, ha „Szponzorált”.',
+          'Bármelyik oldalon, ha a címsorban lakat ikon látható.'],
+      why: 'A hamis oldalak tökéletesen utánozzák a bankot, és a lakat sem garancia. Csak a hivatalos alkalmazásból vagy a saját maga által beírt, elmentett címről biztonságos belépni.' },
+    { l: 2, q: 'SMS-t kap: „Számláját zároltuk. 24 órán belül erősítse meg adatait: [link]”. Mit tesz?',
+      a: ['Nem kattintok a linkre, törlöm az üzenetet; ha bizonytalan vagyok, a bankot a hivatalos számán hívom.',
+          'Rákattintok, de csak a nevemet és a születési dátumomat adom meg.',
+          'Felhívom az SMS-ben megadott telefonszámot, hogy kiderüljön, valódi-e.',
+          'Megnyitom a linket, és ha az oldal pont úgy néz ki, mint a bankomé, belépek.'],
+      why: 'A sürgetés, a fenyegetés és az adatkérő link az adathalász üzenet jellemzői. Ne kattintson, és a bankot mindig a hivatalos számán keresse — ne az üzenetben megadotton.' },
+    { l: 3, q: 'Felhívja „a bank biztonsági osztálya”, a kijelzőn a bank valódi száma látszik. Azt kérik, utalja át a pénzét egy „biztonsági számlára”. Mi a helyes?',
+      a: ['Leteszem, majd én magam hívom a bankot a kártyám hátoldalán lévő számon.',
+          'Átutalom, hiszen a kijelzőn a bank száma látszott.',
+          'Telepítem az alkalmazást, amit kérnek, hogy segíthessenek.',
+          'Csak a kártyám számát mondom meg, a PIN-kódomat nem.'],
+      why: 'A hívószám hamisítható, és a bank soha nem kér „biztonsági számlára” utalást. Tegye le, és Ön hívja a bankot egy biztosan valódi számon.' },
+    { l: 4, q: 'Melyik a legbiztonságosabb jelszó-szokás a netbankhoz?',
+      a: ['Hosszú jelmondat, amelyet csak a netbankhoz használok, és senkinek nem árulok el.',
+          'Egy rövid, de bonyolult jelszó (pl. Ab1!), amit minden oldalon használok.',
+          'A születési dátumom, mert biztosan nem felejtem el.',
+          'Bármilyen jelszó, ha felírom a bankkártya hátoldalára.'],
+      why: 'A hosszú, egyedi jelmondat a legerősebb. Ha ugyanazt a jelszót több helyen használja, egyetlen kiszivárgás minden fiókját veszélybe sodorja.' },
+    { l: 5, q: 'SMS-ben megerősítő kódot kap egy olyan átutaláshoz, amelyet nem Ön indított. Mit tesz?',
+      a: ['Senkinek nem adom meg, és azonnal szólok a banknak.',
+          'Megadom annak, aki éppen telefonon kéri, ha név szerint ismeri a számlámat.',
+          'Beírom, hátha csak a bank rendszerének ellenőrzése.',
+          'Továbbítom egy családtagomnak, hogy ő döntse el.'],
+      why: 'A megerősítő kód olyan, mint az aláírása. Ha nem Ön indította a műveletet, senkinek ne adja meg, és azonnal jelezze a banknak.' },
+    { l: 6, q: 'Az unokája hangján hívják: bajban van, azonnal pénz kell, de ne szóljon senkinek. Mit tesz?',
+      a: ['Leteszem, és visszahívom az unokámat a régről ismert számán, vagy megkérdezem a családi jelszót.',
+          'Utalok, hiszen biztosan felismertem a hangját.',
+          'Megadom a bankkártyám adatait, mert sürgős.',
+          'Elküldöm a netbank-belépésemet, hogy ő maga utalhasson.'],
+      why: 'A hang MI-vel hamisítható. Tegye le, hívja vissza a családtagot az ismert számán, vagy kérdezze meg a családi jelszót. A „ne szólj senkinek” mindig figyelmeztető jel.' },
+    { l: 7, q: 'Melyik helyzetben a legbiztonságosabb netbankolni?',
+      a: ['A saját, frissített, képernyőzárral védett telefonomon, otthon.',
+          'Egy kávézó ingyenes wifijén, ha az oldal címe mellett lakat van.',
+          'A könyvtár közös számítógépén, ha utána kijelentkezem.',
+          'Egy SMS-ben kapott linkről telepített „frissített banki alkalmazással”.'],
+      why: 'A saját, frissített, zárolt eszköz otthon a legbiztonságosabb. Nyilvános wifin és idegen gépen ne netbankoljon, alkalmazást pedig csak a hivatalos áruházból telepítsen.' },
+    { l: 8, q: 'Rájön, hogy egy csalónak adta meg a netbank-adatait. Mi az első lépés?',
+      a: ['Azonnal felhívom a bankot a hivatalos számán, és letiltatom a kártyát és a netbankot.',
+          'Várok néhány napot, hátha nem történik semmi.',
+          'Nem szólok senkinek, mert szégyellem.',
+          'Megkeresem a csalót, és megkérem, hogy ne használja az adataimat.'],
+      why: 'Minden perc számít: azonnal hívja a bankot a hivatalos számán, és tiltassa le a hozzáféréseket. Utána jelszócsere, feljelentés és a bizonyítékok megőrzése következik.' }
+  ];
+  var renderBest = function () {};
+  (function quiz() {
+    var form = $('#quiz-form'), list = $('#quiz-list'), status = $('#quiz-status'), result = $('#quiz-result'), submit = $('#quiz-submit');
+    var order = [], evaluated = false;
+    var LET = 'ABCD';
+    function render() {
+      evaluated = false;
+      form.classList.remove('evaluated');
+      order = QUIZ.map(function (q) { return shuffle(q.a.map(function (t, i) { return { t: t, ok: i === 0 }; })); });
+      list.innerHTML = QUIZ.map(function (q, qi) {
+        return '<li class="q" id="q-' + qi + '"><fieldset>' +
+          '<legend><span class="q-num" aria-hidden="true">' + (qi + 1) + '</span><span><span class="sr-only">' + (qi + 1) + '. kérdés: </span>' + esc(q.q) + '</span></legend>' +
+          '<div class="opts">' + order[qi].map(function (o, oi) {
+            return '<label class="opt"><input type="radio" name="q' + qi + '" value="' + oi + '">' +
+              '<span class="opt-letter" aria-hidden="true">' + LET[oi] + '</span><span class="opt-text">' + esc(o.t) + '</span><span class="opt-mark"></span></label>';
+          }).join('') + '</div>' +
+          '<div class="q-feedback" hidden></div></fieldset></li>';
+      }).join('');
+      result.hidden = true;
+      result.innerHTML = '';
+      submit.hidden = false;
+      $('#quiz-bar').hidden = false;
+      updateStatus();
+    }
+    function answers() {
+      return QUIZ.map(function (_, i) {
+        var c = form.querySelector('input[name="q' + i + '"]:checked');
+        return c ? +c.value : null;
+      });
+    }
+    function updateStatus() {
+      var a = answers();
+      var n = a.filter(function (x) { return x !== null; }).length;
+      status.classList.remove('warn');
+      status.textContent = 'Megválaszolva: ' + n + ' / ' + QUIZ.length;
+    }
+    list.addEventListener('change', function (e) {
+      if (e.target.type !== 'radio' || evaluated) return;
+      var li = e.target.closest('.q');
+      li.classList.remove('missing');
+      $$('.opt', li).forEach(function (o) { o.classList.toggle('selected', o.querySelector('input').checked); });
+      updateStatus();
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (evaluated) return;
+      var a = answers();
+      var missing = [];
+      a.forEach(function (x, i) { if (x === null) missing.push(i); });
+      if (missing.length) {
+        status.classList.add('warn');
+        status.textContent = 'Még ' + missing.length + ' kérdés megválaszolatlan. Kérjük, válaszoljon mindegyikre!';
+        missing.forEach(function (i) { $('#q-' + i).classList.add('missing'); });
+        var first = $('#q-' + missing[0]);
+        first.scrollIntoView({ behavior: smooth(), block: 'center' });
+        first.querySelector('input').focus({ preventScroll: true });
+        return;
+      }
+      evaluated = true;
+      form.classList.add('evaluated');
+      var score = 0, wrong = [];
+      QUIZ.forEach(function (q, qi) {
+        var li = $('#q-' + qi);
+        var correctIdx = order[qi].findIndex(function (o) { return o.ok; });
+        var right = a[qi] === correctIdx;
+        if (right) score++; else wrong.push(q.l);
+        $$('.opt', li).forEach(function (o, oi) {
+          o.querySelector('input').disabled = true;
+          o.classList.remove('selected');
+          if (oi === correctIdx) { o.classList.add('is-correct'); o.querySelector('.opt-mark').textContent = '✓ Helyes válasz'; }
+          else if (oi === a[qi]) { o.classList.add('is-wrong'); o.querySelector('.opt-mark').textContent = '✕ Az Ön válasza'; }
+        });
+        li.classList.add(right ? 'q-right' : 'q-wrong');
+        var fb = $('.q-feedback', li);
+        fb.className = 'q-feedback ' + (right ? 'ok' : 'bad');
+        fb.innerHTML = '<strong>' + (right ? 'Helyes válasz!' : 'Ez nem a helyes válasz.') + '</strong> ' + esc(q.why) +
+          ' <a href="#lecke-' + q.l + '">Ismétlés: ' + q.l + '. lecke</a>';
+        fb.hidden = false;
+      });
+      showResult(score, wrong);
+    });
+    function showResult(score, wrong) {
+      var total = QUIZ.length, pct = Math.round(score / total * 100);
+      var title, msg, tone;
+      if (score === total) { title = 'Kiváló!'; msg = 'Minden kérdésre helyesen válaszolt. Ön felkészült — a csalóknak nehéz dolguk lesz Önnel.'; tone = 'ok'; }
+      else if (pct >= 75) { title = 'Nagyon jó!'; msg = 'Szinte mindent tud, ami a biztonságos netbankoláshoz kell. Nézze át a hibás válaszokhoz tartozó leckéket.'; tone = 'ok'; }
+      else if (pct >= 50) { title = 'Jó kezdet!'; msg = 'Az alapokat már ismeri. Érdemes átolvasni az alább megjelölt leckéket, majd újra kitölteni a tesztet.'; tone = 'warn'; }
+      else { title = 'Ne csüggedjen!'; msg = 'A csalók trükkjei elsőre nem könnyűek. Olvassa át újra a leckéket, és próbálja meg ismét — a második kör mindig jobban megy.'; tone = 'bad'; }
+      var passed = pct >= 75;
+      var C = 2 * Math.PI * 60;
+      var uniq = wrong.filter(function (v, i, arr) { return arr.indexOf(v) === i; });
+      result.className = 'quiz-result ' + tone;
+      result.innerHTML =
+        '<div class="result-top">' +
+          '<div class="ring-wrap"><svg class="ring" viewBox="0 0 140 140" aria-hidden="true"><circle class="ring-bg" cx="70" cy="70" r="60"/>' +
+          '<circle class="ring-fg" cx="70" cy="70" r="60" transform="rotate(-90 70 70)" stroke-dasharray="' + C.toFixed(2) + '" stroke-dashoffset="' + C.toFixed(2) + '"/></svg>' +
+          '<div class="ring-label"><strong>' + score + ' / ' + total + '</strong><span>' + pct + '%</span></div></div>' +
+          '<div class="result-text">' +
+            '<span class="pass ' + (passed ? 'yes' : 'no') + '">' + (passed ? icon('i-check') + 'Sikeres teszt' : 'Még nem sikeres (legalább 6 helyes válasz kell)') + '</span>' +
+            '<h3>' + title + '</h3><p>' + msg + '</p>' +
+            (uniq.length ? '<p style="margin-top:.8rem"><strong>Érdemes átismételni:</strong></p><ul class="review-links">' +
+              uniq.map(function (l) { return '<li><a href="#lecke-' + l + '">' + l + '. lecke</a></li>'; }).join('') + '</ul>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div class="btn-row" style="margin-top:1.4rem">' +
+          '<button type="button" class="btn btn-primary" id="quiz-retry">' + icon('i-refresh') + 'Újra kitöltöm</button>' +
+          '<a class="btn btn-secondary" href="#tartalom">Vissza a tartalomhoz</a>' +
+        '</div>';
+      result.hidden = false;
+      $('#quiz-bar').hidden = true;
+      var fg = $('.ring-fg', result);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { fg.setAttribute('stroke-dashoffset', (C * (1 - score / total)).toFixed(2)); }); });
+      result.scrollIntoView({ behavior: smooth(), block: 'start' });
+      result.focus({ preventScroll: true });
+      $('#quiz-retry').addEventListener('click', function () {
+        render();
+        $('#teszt').scrollIntoView({ behavior: smooth(), block: 'start' });
+      });
+      var best = Math.max(store.get('quiz-best', 0) || 0, score);
+      store.set('quiz-best', best);
+      renderBest();
+      toast('Eredménye: ' + score + ' / ' + total + ' (' + pct + '%)');
+    }
+    renderBest = function () {
+      var best = store.get('quiz-best', null);
+      $('#toc-test-status').textContent = typeof best === 'number' ? 'Legjobb eredmény: ' + best + ' / ' + QUIZ.length : QUIZ.length + ' kérdés';
+    };
+    render();
+    renderBest();
+  })();
+
+  /* ---------- Technológiai leírás (rejtett párbeszédablak) ---------- */
+  (function techDialog() {
+    var dlg = $('#tech-dialog');
+    var opener = null;
+    function open(e) {
+      opener = e && e.currentTarget;
+      if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+      dlg.scrollTop = 0;
+    }
+    function close() {
+      if (typeof dlg.close === 'function') dlg.close(); else dlg.removeAttribute('open');
+    }
+    $$('[data-open-tech]').forEach(function (b) { b.addEventListener('click', open); });
+    $$('[data-close-tech]').forEach(function (b) { b.addEventListener('click', close); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) close(); });
+    dlg.addEventListener('close', function () { if (opener) opener.focus(); });
+    $$('.tech-nav a', dlg).forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        var t = $(a.getAttribute('href'), dlg);
+        if (t) t.scrollIntoView({ behavior: smooth(), block: 'start' });
+      });
+    });
+    $('#copy-prompt').addEventListener('click', function () {
+      var text = $('#prompt-text').textContent;
+      var okMsg = function () { toast('A prompt a vágólapra került.'); };
+      var fail = function () { toast('A másolás nem sikerült — jelölje ki a szöveget kézzel.'); };
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(okMsg, fail);
+        else fail();
+      } catch (err) { fail(); }
+    });
+    if (location.hash === '#technologia') open();
+  })();
+
+  /* ---------- Haladás törlése (kétlépcsős megerősítés, felugró ablak nélkül) ---------- */
+  (function resetAll() {
+    var b = $('#reset-all'), armed = false, t;
+    b.addEventListener('click', function () {
+      if (!armed) {
+        armed = true;
+        b.querySelector('span').textContent = 'Biztosan? Kattintson újra';
+        t = setTimeout(function () { armed = false; b.querySelector('span').textContent = 'Haladás törlése'; }, 4000);
+        return;
+      }
+      clearTimeout(t);
+      armed = false;
+      b.querySelector('span').textContent = 'Haladás törlése';
+      done = {};
+      ['done', 'checks', 'quiz-best'].forEach(store.del);
+      renderProgress();
+      $$('#checklist input').forEach(function (x) { x.checked = false; x.dispatchEvent(new Event('change')); });
+      renderBest();
+      toast('A haladását töröltük ezen a gépen.');
+    });
+  })();
+
+  /* ---------- Vissza a tetejére ---------- */
+  (function toTop() {
+    var btn = $('#to-top');
+    var quizBar = $('#quiz-bar');
+    var ticking = false;
+    function onScroll() {
+      btn.classList.toggle('show', window.scrollY > 900);
+      var r = quizBar.getBoundingClientRect();
+      doc.body.classList.toggle('quiz-in-view', !quizBar.hidden && r.top < window.innerHeight && r.bottom > 0);
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: smooth() });
+      $('.brand').focus({ preventScroll: true });
+    });
+    onScroll();
+  })();
+})();
+</script>
+</body>
+</html>
